@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour
     public float mouseSensitivity = 2f;
     public Transform playerCamera;
 
+    private CharacterController controller;
     private float xRotation = 0f;
 
     private int count = 0;
@@ -15,6 +16,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        controller = GetComponent<CharacterController>();
     }
 
     void Update()
@@ -35,7 +37,7 @@ public class Movement : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical");
 
         Vector3 moveDirection = transform.right * moveX + transform.forward * moveZ;
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        controller.Move(moveDirection * moveSpeed * Time.deltaTime);
     }
 
     void HandleMouseLook()
