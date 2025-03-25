@@ -15,19 +15,21 @@ public class Movement : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         controller = GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        HandleMovement();
-        HandleMouseLook();
-
-        if (Input.GetMouseButtonDown(0))
+        if(controller.enabled == true)
         {
-            count++;
-            AnalyticActions.MouseClicked(count);            //Calling the event
+            HandleMovement();
+            HandleMouseLook();
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                count++;
+                AnalyticActions.MouseClicked(count);            //Calling the event
+            }
         }
     }
 
