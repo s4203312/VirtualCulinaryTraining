@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +8,8 @@ public class TriggerInteractions : MonoBehaviour
     public GameObject player;
 
     public bool inInteraction;
+
+    private GameObject currentInteractionManager;
 
     //Into the interaction view
     private void OnTriggerStay(Collider other)
@@ -21,6 +23,15 @@ public class TriggerInteractions : MonoBehaviour
                 player.GetComponentInChildren<Camera>().enabled = false;
 
                 camera.GetComponent<Camera>().enabled = true;
+                Debug.Log(transform.name + "Manager");
+                currentInteractionManager = GameObject.Find(transform.name + "Manager");           //Finding the manager for interactions
+                if(currentInteractionManager != null)
+                {
+                    Type managerScriptType = Type.GetType(transform.name + "Manager");
+                    Component managerScript = currentInteractionManager.GetComponent(managerScriptType);
+                    managerScript.GetType().GetProperty("enabled").SetValue(managerScript, true);
+                }
+
                 inInteraction = true;
 
                 Cursor.lockState = CursorLockMode.None;
@@ -41,6 +52,10 @@ public class TriggerInteractions : MonoBehaviour
                 player.GetComponentInChildren<Camera>().enabled = true;
 
                 camera.GetComponent<Camera>().enabled = false;
+                if (currentInteractionManager != null)
+                {
+                    currentInteractionManager.SetActive(false);
+                }
                 inInteraction = false;
 
                 Cursor.lockState = CursorLockMode.Locked;

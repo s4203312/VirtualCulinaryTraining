@@ -22,10 +22,12 @@ public class SelectColour : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100))
         {
-            Debug.Log(hit.transform.name);
-            hitColour = hit.collider.gameObject;
+            if(hit.transform.tag == "ColourSelection") 
+            {
+                Debug.Log(hit.transform.name);
+                hitColour = hit.collider.gameObject;
+            }
         }
-
         return hitColour;
     }
 }
