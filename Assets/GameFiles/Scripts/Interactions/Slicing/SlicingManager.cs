@@ -20,7 +20,6 @@ public class SlicingManager : MonoBehaviour
     private void Start()
     {
         slicingCam.GetComponent<SelectingItems>().enabled = false;
-        slicingCam.GetComponent<MouseSlicing>().enabled = false;
     }
 
     void Update()
@@ -35,16 +34,7 @@ public class SlicingManager : MonoBehaviour
         {
             ChosenColour();
             slicingCam.GetComponent<SelectingItems>().enabled = true;
-
-            //UIcanvas.SetActive(true);
         }
-
-        //Selecting Items
-        //if(slicingCam.GetComponent<SelectingItems>().selectedItem == )
-        //{
-
-        //}
-
     }
 
     //Colour chopping board functions
