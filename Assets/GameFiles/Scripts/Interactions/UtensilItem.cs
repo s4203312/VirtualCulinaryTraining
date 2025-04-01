@@ -31,10 +31,21 @@ public class UtensilItem : MonoBehaviour
         {
             if(collider.transform.tag == "PickUpFood")      //Chopping food
             {
-                GameObject slicedObject = collider.transform.GetComponent<SlicingObject>().slicedVersion;
-                Instantiate(slicedObject, collider.transform.position, Quaternion.identity);
-                Destroy(collider.gameObject);
-                
+                if(collider.transform.TryGetComponent<SliceableObject>(out SliceableObject sliceableObject))
+                {
+                    GameObject slicedObject = sliceableObject.slicedVersion;
+
+                    //Changing the look of the object
+                    collider.transform.GetComponent<MeshFilter>().mesh = slicedObject.GetComponent<MeshFilter>().mesh;
+                    collider.transform.GetComponent<MeshRenderer>().material = slicedObject.GetComponent<MeshRenderer>().material;
+                    collider.transform.localScale = slicedObject.transform.localScale;
+
+                    collider.transform.GetComponent<MeshCollider>().sharedMesh = null;  // First, clear the old mesh
+                    collider.transform.GetComponent<MeshCollider>().sharedMesh = collider.GetComponent<MeshFilter>().mesh;
+
+                    //Setting has chopped to be true
+                    sliceableObject.hasBeenSliced = true;
+                }
             }
         }
     }

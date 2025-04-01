@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 public class SelectingItems : MonoBehaviour
 {
     public SlicingManager manager;
+    public PrepManager prepManager;
     
     public GameObject selectedItem = null;
 
@@ -49,18 +50,31 @@ public class SelectingItems : MonoBehaviour
         {
             if (hit.collider.CompareTag("PickUpFood"))      //Unable to move food just select it
             {
-                if (manager.itemOnBoard != null)            //Putting item back
+                if (hit.transform.GetComponent<SliceableObject>().hasBeenSliced)    //Moving sliced items to bowl
                 {
-                    manager.itemOnBoard.transform.position = manager.itemOnBoardOldPos;
+                    selectedItem = hit.collider.gameObject;
+                    selectedItem.transform.position = manager.finishedBowl.transform.position + manager.finishedBowl.transform.up * 0.1f;
+                    selectedItem.transform.parent = manager.finishedBowl.transform;
+                    StartCoroutine(moveBowl(selectedItem));
+
+                    //Reseting variables
+                    manager.itemOnBoard = null;
                 }
+                else
+                {
+                    if (manager.itemOnBoard != null)            //Putting item back
+                    {
+                        manager.itemOnBoard.transform.position = manager.itemOnBoardOldPos;
+                    }
 
-                //Selecting the item
-                selectedItem = hit.collider.gameObject;
-                manager.itemOnBoardOldPos = selectedItem.transform.position;
-                manager.itemOnBoard = selectedItem;
+                    //Selecting the item
+                    selectedItem = hit.collider.gameObject;
+                    manager.itemOnBoardOldPos = selectedItem.transform.position;
+                    manager.itemOnBoard = selectedItem;
 
-                //Moving item to board
-                selectedItem.transform.position = manager.choppingBoard.transform.position + manager.choppingBoard.transform.up * 0.1f;
+                    //Moving item to board
+                    selectedItem.transform.position = manager.choppingBoard.transform.position + manager.choppingBoard.transform.up * 0.1f;
+                }
             }
             else if (hit.collider.CompareTag("PickUpUtensil"))      //Able to move utensils
             {
@@ -87,4 +101,12 @@ public class SelectingItems : MonoBehaviour
         mousePoint.z = zPosition; //Brings object inline with board
         return GetComponent<Camera>().ScreenToWorldPoint(mousePoint);
     }
+
+    private IEnumerator moveBowl(GameObject preppedItem)
+    {
+        yield return new WaitForSeconds(1f);
+        prepManager.preppedIngredients.Add(preppedItem);
+        preppedItem.SetActive(false);
+        yield return null;
+    } 
 }

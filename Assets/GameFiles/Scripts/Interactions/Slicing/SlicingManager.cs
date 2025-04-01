@@ -12,10 +12,13 @@ public class SlicingManager : MonoBehaviour
     public GameObject colourSelectionPrefab;
     private GameObject colourSelection;
 
-    //
+    //Chopping board information
     public GameObject choppingBoard;
     public GameObject itemOnBoard;
     public Vector3 itemOnBoardOldPos;
+
+    //Bowl information
+    public GameObject finishedBowl;
 
     private void Start()
     {

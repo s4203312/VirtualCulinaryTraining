@@ -8,6 +8,7 @@ TagManager:
   - PickUpFood
   - PickUpUtensil
   - ColourSelection
+  - Bowl
   layers:
   - Default
   - TransparentFX
