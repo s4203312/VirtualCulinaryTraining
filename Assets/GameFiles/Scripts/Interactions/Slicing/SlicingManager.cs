@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SlicingManager : MonoBehaviour
 {
     private bool isInteracting = false;
     public Camera slicingCam;
+    public Canvas slicingCanvas;
 
     //Colour Selection Variables
     public GameObject colourSelectionPrefab;
@@ -23,6 +25,7 @@ public class SlicingManager : MonoBehaviour
     private void Start()
     {
         slicingCam.GetComponent<SelectingItems>().enabled = false;
+        slicingCanvas.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(ChooseColourAgain);
     }
 
     void Update()
@@ -30,6 +33,7 @@ public class SlicingManager : MonoBehaviour
         //Showing colour options
         if (isInteracting == false && slicingCam.enabled == true)
         {
+            slicingCanvas.enabled = false;
             ShowColourSelection();
         }
         //Choosing a colour for the board
@@ -37,6 +41,7 @@ public class SlicingManager : MonoBehaviour
         {
             ChosenColour();
             slicingCam.GetComponent<SelectingItems>().enabled = true;
+            slicingCanvas.enabled = true;
         }
     }
 
@@ -54,5 +59,16 @@ public class SlicingManager : MonoBehaviour
         Material chosenMaterial = hitObject.GetComponent<Renderer>().material;
         choppingBoard.GetComponent<Renderer>().material = chosenMaterial;
         Destroy(colourSelection);
+    }
+
+    private void ChooseColourAgain()        //Reseting the board colour
+    {
+        if (itemOnBoard)
+        {
+            itemOnBoard.transform.position = itemOnBoardOldPos;
+        }
+
+        slicingCam.GetComponent<SelectingItems>().enabled = false;
+        isInteracting = false;
     }
 }

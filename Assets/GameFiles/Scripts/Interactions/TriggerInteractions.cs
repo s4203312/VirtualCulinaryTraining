@@ -17,7 +17,8 @@ public class TriggerInteractions : MonoBehaviour
         if(other.gameObject == player && Input.GetKey(KeyCode.E) == true)
         {
             gameManager.gameCameras.TryGetValue(transform.name, out GameObject camera);
-            if(camera != null)
+            GameObject currentCanvas = gameManager.gameCanvases.transform.Find(transform.name).gameObject;
+            if (camera != null)
             {
                 player.GetComponent<CharacterController>().enabled = false;     //Sets the movement of character to false
                 player.GetComponentInChildren<Camera>().enabled = false;
@@ -30,6 +31,8 @@ public class TriggerInteractions : MonoBehaviour
                     Type managerScriptType = Type.GetType(transform.name + "Manager");
                     Component managerScript = currentInteractionManager.GetComponent(managerScriptType);
                     managerScript.GetType().GetProperty("enabled").SetValue(managerScript, true);
+
+                    currentCanvas.SetActive(true);
                 }
 
                 inInteraction = true;

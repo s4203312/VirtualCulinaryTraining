@@ -6,6 +6,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public Dictionary<string, GameObject> gameCameras = new Dictionary<string, GameObject>();
+    public GameObject gameCanvases;
+
+    public GameObject recipe;
 
     void Awake()
     {
@@ -32,5 +35,17 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    private void Update()
+    {
+        if(Input.GetKey(KeyCode.R) == true)     //Recipe
+        {
+            recipe.SetActive(true);
+        }
+        if (Input.GetKey(KeyCode.T) == true)
+        {
+            recipe.SetActive(false);
+        }
     }
 }
