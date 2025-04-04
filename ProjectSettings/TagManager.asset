@@ -9,6 +9,8 @@ TagManager:
   - PickUpUtensil
   - ColourSelection
   - Bowl
+  - Sauce
+  - MixingBowl
   layers:
   - Default
   - TransparentFX

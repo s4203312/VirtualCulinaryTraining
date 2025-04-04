@@ -55,9 +55,23 @@ public class TriggerInteractions : MonoBehaviour
                 player.GetComponentInChildren<Camera>().enabled = true;
 
                 camera.GetComponent<Camera>().enabled = false;
+
+                //Reseting the section when leaving
+                SelectingItems selectingScript = camera.gameObject.GetComponent<SelectingItems>();
+                selectingScript.selectedItem.TryGetComponent(out UtensilItem script);
+                if (script != null)
+                {
+                    script.enabled = false;
+                    selectingScript.selectedItem.transform.position = selectingScript.utensilOldPos;
+                }
+                selectingScript.itemInHand = false;
+                selectingScript.selectedItem = null;
+
                 if (currentInteractionManager != null)
                 {
-                    currentInteractionManager.SetActive(false);
+                    Type managerScriptType = Type.GetType(transform.name + "Manager");
+                    Component managerScript = currentInteractionManager.GetComponent(managerScriptType);
+                    managerScript.GetType().GetProperty("enabled").SetValue(managerScript, false);
                 }
                 inInteraction = false;
 

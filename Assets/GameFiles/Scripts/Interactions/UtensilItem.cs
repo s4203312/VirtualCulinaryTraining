@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UtensilItem : MonoBehaviour
 {
+    private bool sauceInSpoon;
+    private GameObject sauceSelected;
+
     public void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -13,8 +16,8 @@ public class UtensilItem : MonoBehaviour
                 case "Knife":
                     KnifeAction();
                     break;
-                case "MeasuringSpoon":          //More cases to add
-
+                case "TBSP" or "TSP":          //More cases to add
+                    MeasuringSpoonAction();
                     break;
                 default:
                     break;
@@ -45,6 +48,45 @@ public class UtensilItem : MonoBehaviour
 
                     //Setting has chopped to be true
                     sliceableObject.hasBeenSliced = true;
+                }
+            }
+        }
+    }
+
+    public void MeasuringSpoonAction()
+    {
+        if (!sauceInSpoon)
+        {
+            Collider[] collidedObject = Physics.OverlapSphere(transform.position, 0.1f);
+            foreach (Collider collider in collidedObject)
+            {
+                if (collider.transform.tag == "Sauce")      //Sauces
+                {
+                    sauceSelected = collider.transform.gameObject;
+                    sauceSelected.transform.position = gameObject.transform.position;
+                    sauceSelected.transform.parent = gameObject.transform;
+                    if(transform.name == "TBSP")
+                    {
+                        sauceSelected.GetComponent<SauceObjectStorage>().amountOfSauce = 15;
+                    }
+                    else if(transform.name == "TSP")
+                    {
+                        sauceSelected.GetComponent<SauceObjectStorage>().amountOfSauce = 5;
+                    }
+                    sauceInSpoon = true;
+                }
+            }
+        }
+        else
+        {
+            Collider[] collidedObject = Physics.OverlapSphere(transform.position, 1f);
+            foreach (Collider collider in collidedObject)
+            {
+                if (collider.transform.tag == "MixingBowl")
+                {
+                    sauceSelected.transform.position = collider.transform.position;
+                    sauceSelected.transform.parent = collider.transform;            //Changing parent to mixing bowl
+                    sauceInSpoon = false;
                 }
             }
         }

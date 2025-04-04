@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PreppedIngredients : MonoBehaviour
+public class SauceObjectStorage : MonoBehaviour
 {
-    
+    public int amountOfSauce;
 
 
     // Start is called before the first frame update
