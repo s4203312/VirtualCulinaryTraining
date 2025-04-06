@@ -38,16 +38,16 @@ public class UtensilItem : MonoBehaviour
                 {
                     GameObject slicedObject = sliceableObject.slicedVersion;
 
-                    //Changing the look of the object
-                    collider.transform.GetComponent<MeshFilter>().mesh = slicedObject.GetComponent<MeshFilter>().mesh;
-                    collider.transform.GetComponent<MeshRenderer>().material = slicedObject.GetComponent<MeshRenderer>().material;
-                    collider.transform.localScale = slicedObject.transform.localScale;
-
-                    collider.transform.GetComponent<MeshCollider>().sharedMesh = null;  // First, clear the old mesh
-                    collider.transform.GetComponent<MeshCollider>().sharedMesh = collider.GetComponent<MeshFilter>().mesh;
-
-                    //Setting has chopped to be true
-                    sliceableObject.hasBeenSliced = true;
+                    //Creating the cut version of the object
+                    GameObject newItem = Instantiate(slicedObject, collider.transform.position, Quaternion.identity);
+                    //newItem.transform.localScale = collider.transform.localScale;
+                    if(!newItem.TryGetComponent<SliceableObject>(out SliceableObject sliced))
+                    {
+                        sliced = newItem.AddComponent<SliceableObject>();
+                    }
+                    sliced.hasBeenSliced = true;
+                    newItem.tag = collider.transform.tag;
+                    Destroy(collider.gameObject);
                 }
             }
         }

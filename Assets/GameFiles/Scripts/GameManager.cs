@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject recipe;
 
+    public GameObject spaceInFridge;
+
     void Awake()
     {
         FindAllCameras();

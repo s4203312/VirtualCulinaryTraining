@@ -15,7 +15,7 @@ public class PrepManager : MonoBehaviour
 
     private IEnumerator UpdateIngredients()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         int i = 0;
         foreach(GameObject preppedIngredient in preppedIngredients)
         {

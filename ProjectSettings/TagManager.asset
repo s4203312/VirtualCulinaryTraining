@@ -11,6 +11,7 @@ TagManager:
   - Bowl
   - Sauce
   - MixingBowl
+  - Fryable
   layers:
   - Default
   - TransparentFX

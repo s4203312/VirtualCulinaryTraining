@@ -5,8 +5,10 @@ using UnityEngine.UIElements;
 
 public class SelectingItems : MonoBehaviour
 {
-    public SlicingManager manager;
+    public GameManager gameManager;
+    public SlicingManager slicingManager;
     public PrepManager prepManager;
+    public SaucesManager saucesManager;
     
     public GameObject selectedItem = null;
 
@@ -55,27 +57,26 @@ public class SelectingItems : MonoBehaviour
                     if (hit.transform.GetComponent<SliceableObject>().hasBeenSliced)    //Moving sliced items to bowl
                     {
                         selectedItem = hit.collider.gameObject;
-                        selectedItem.transform.position = manager.finishedBowl.transform.position + manager.finishedBowl.transform.up * 0.1f;
-                        selectedItem.transform.parent = manager.finishedBowl.transform;
+                        selectedItem.transform.position = slicingManager.finishedBowl.transform.position + slicingManager.finishedBowl.transform.up * 0.1f;
                         StartCoroutine(moveBowl(selectedItem));
 
                         //Reseting variables
-                        manager.itemOnBoard = null;
+                        slicingManager.itemOnBoard = null;
                     }
                     else
                     {
-                        if (manager.itemOnBoard != null)            //Putting item back
+                        if (slicingManager.itemOnBoard != null)            //Putting item back
                         {
-                            manager.itemOnBoard.transform.position = manager.itemOnBoardOldPos;
+                            slicingManager.itemOnBoard.transform.position = slicingManager.itemOnBoardOldPos;
                         }
 
                         //Selecting the item
                         selectedItem = hit.collider.gameObject;
-                        manager.itemOnBoardOldPos = selectedItem.transform.position;
-                        manager.itemOnBoard = selectedItem;
+                        slicingManager.itemOnBoardOldPos = selectedItem.transform.position;
+                        slicingManager.itemOnBoard = selectedItem;
 
                         //Moving item to board
-                        selectedItem.transform.position = manager.choppingBoard.transform.position + manager.choppingBoard.transform.up * 0.1f;
+                        selectedItem.transform.position = slicingManager.choppingBoard.transform.position + slicingManager.choppingBoard.transform.up * 0.1f;
                     }
                 }
                 else if (hit.collider.CompareTag("PickUpUtensil"))      //Able to move utensils
@@ -108,8 +109,23 @@ public class SelectingItems : MonoBehaviour
     private IEnumerator moveBowl(GameObject preppedItem)
     {
         yield return new WaitForSeconds(1f);
-        prepManager.preppedIngredients.Add(preppedItem);
-        preppedItem.SetActive(false);
+        if(preppedItem.TryGetComponent<SauceObjectStorage>(out SauceObjectStorage sauceScript))      //Lettuce going to sauce station
+        {
+            Destroy(preppedItem.GetComponent<SliceableObject>());
+            preppedItem.tag = "Sauce";
+            preppedItem.transform.position = saucesManager.lettuceBowl.transform.position + saucesManager.lettuceBowl.transform.up * 0.1f;
+        }
+        else if(preppedItem.TryGetComponent<placeHolderFrying>(out placeHolderFrying fryScript))                       //Burgers going to fridge
+        {
+            Destroy(preppedItem.GetComponent<SliceableObject>());
+            preppedItem.tag = "Fryable";
+            preppedItem.transform.position = gameManager.spaceInFridge.transform.position;
+        }
+        else                //All other items to prep station
+        {
+            prepManager.preppedIngredients.Add(preppedItem);
+            preppedItem.SetActive(false);
+        }
         yield return null;
     } 
 }
