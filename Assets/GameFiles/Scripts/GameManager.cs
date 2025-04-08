@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject recipe;
 
     public GameObject spaceInFridge;
+    public GameObject itemInFridge;
+    public bool isInFridge = false;
 
     void Awake()
     {

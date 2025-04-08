@@ -8,8 +8,11 @@ public class SaucesManager : MonoBehaviour
     public GameObject mixingBowl;
     public GameObject lettuceBowl;
 
-    void Update()
+    public Transform prepStationMixBowlPos;
+
+    public void CompletedSauce()
     {
-        
+        mixingBowl.transform.position = prepStationMixBowlPos.position;
+        mixingBowl.transform.rotation = prepStationMixBowlPos.rotation;
     }
 }

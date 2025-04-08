@@ -120,6 +120,8 @@ public class SelectingItems : MonoBehaviour
             Destroy(preppedItem.GetComponent<SliceableObject>());
             preppedItem.tag = "Fryable";
             preppedItem.transform.position = gameManager.spaceInFridge.transform.position;
+            gameManager.itemInFridge = preppedItem;
+            gameManager.isInFridge = true;
         }
         else                //All other items to prep station
         {
