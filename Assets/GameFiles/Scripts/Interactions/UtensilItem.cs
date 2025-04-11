@@ -7,6 +7,9 @@ public class UtensilItem : MonoBehaviour
     private bool sauceInSpoon;
     private GameObject sauceSelected;
 
+    //Analytic collection
+    public ChoppingEvent choppingEvent;
+
     public void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -36,6 +39,9 @@ public class UtensilItem : MonoBehaviour
             {
                 if(collider.transform.TryGetComponent<SliceableObject>(out SliceableObject sliceableObject))
                 {
+                    //Analytic storage
+                    StoreChoppingInfo("red", collider.transform.name);
+
                     GameObject slicedObject = sliceableObject.slicedVersion;
 
                     //Creating the cut version of the object
@@ -90,5 +96,18 @@ public class UtensilItem : MonoBehaviour
                 }
             }
         }
+    }
+
+    
+    
+    //analytics
+    public void StoreChoppingInfo(string boardColor, string itemName)
+    {
+        choppingEvent.Raise(new ChoppingEventData
+        {
+            boardColour = boardColor,
+            cutItemName = itemName,
+            isCorrect = true
+        });
     }
 }

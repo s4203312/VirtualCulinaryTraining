@@ -1277,6 +1277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 975fea6491f07384b9f8ff9fe89b4486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  choppingEvent: {fileID: 11400000, guid: 607c0b4f2bc67644c8580a5f61e326f2, type: 2}
 --- !u!65 &450671884
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6060,6 +6061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 975fea6491f07384b9f8ff9fe89b4486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  choppingEvent: {fileID: 11400000, guid: 607c0b4f2bc67644c8580a5f61e326f2, type: 2}
 --- !u!1 &1745194132 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5489145493786919654, guid: c331d4509e2a94446b4dedf64fcae8dd,
@@ -6078,6 +6080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 975fea6491f07384b9f8ff9fe89b4486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  choppingEvent: {fileID: 11400000, guid: 607c0b4f2bc67644c8580a5f61e326f2, type: 2}
 --- !u!1001 &1745377006
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6644,6 +6647,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1855230346}
   - component: {fileID: 1855230347}
+  - component: {fileID: 1855230348}
   m_Layer: 0
   m_Name: AnalyticsManager
   m_TagString: Untagged
@@ -6678,6 +6682,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5d923642256d04397971db47da6fbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1855230348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855230344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6566065371ef1c469a353f8d36e673c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  choppingEvent: {fileID: 11400000, guid: 607c0b4f2bc67644c8580a5f61e326f2, type: 2}
 --- !u!1 &1921855848
 GameObject:
   m_ObjectHideFlags: 0
