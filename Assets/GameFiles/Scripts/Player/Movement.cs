@@ -11,8 +11,6 @@ public class Movement : MonoBehaviour
     private CharacterController controller;
     private float xRotation = 0f;
 
-    private int count = 0;
-
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -24,12 +22,6 @@ public class Movement : MonoBehaviour
         {
             HandleMovement();
             HandleMouseLook();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                count++;
-                AnalyticActions.MouseClicked(count);            //Calling the event
-            }
         }
     }
 

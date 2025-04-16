@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class SlicingManager : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class SlicingManager : MonoBehaviour
 
     //Chopping board information
     public GameObject choppingBoard;
+    public string choppingBoardColour;
     public GameObject itemOnBoard;
     public Vector3 itemOnBoardOldPos;
 
@@ -58,6 +61,8 @@ public class SlicingManager : MonoBehaviour
         GameObject hitObject = colourSelection.GetComponent<SelectColour>().hitColour;
         Material chosenMaterial = hitObject.GetComponent<Renderer>().material;
         choppingBoard.GetComponent<Renderer>().material = chosenMaterial;
+        choppingBoardColour = chosenMaterial.name;
+        choppingBoardColour = choppingBoardColour.Substring(0, choppingBoardColour.LastIndexOf(" (Instance)"));     //Removes the the unneeded words from the end
         Destroy(colourSelection);
     }
 

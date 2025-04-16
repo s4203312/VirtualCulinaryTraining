@@ -24,7 +24,6 @@ public class SelectColour : MonoBehaviour
         {
             if(hit.transform.tag == "ColourSelection") 
             {
-                Debug.Log(hit.transform.name);
                 hitColour = hit.collider.gameObject;
             }
         }

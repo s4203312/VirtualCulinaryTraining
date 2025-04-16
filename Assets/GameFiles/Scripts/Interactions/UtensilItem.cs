@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UtensilItem : MonoBehaviour
 {
+    //Managers
+    public SlicingManager SlicingManager;
+
     private bool sauceInSpoon;
     private GameObject sauceSelected;
 
@@ -40,7 +43,7 @@ public class UtensilItem : MonoBehaviour
                 if(collider.transform.TryGetComponent<SliceableObject>(out SliceableObject sliceableObject))
                 {
                     //Analytic storage
-                    StoreChoppingInfo("red", collider.transform.name);
+                    StoreChoppingInfo(SlicingManager.choppingBoardColour, collider.transform.name);
 
                     GameObject slicedObject = sliceableObject.slicedVersion;
 
@@ -100,7 +103,7 @@ public class UtensilItem : MonoBehaviour
 
     
     
-    //analytics
+    //Storing analytics information
     public void StoreChoppingInfo(string boardColor, string itemName)
     {
         choppingEvent.Raise(new ChoppingEventData
