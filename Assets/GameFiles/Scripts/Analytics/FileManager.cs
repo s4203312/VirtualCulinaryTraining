@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class FileManager
 {
-    //File path that works with any machine not just a local path
-    private static string filePath => Path.Combine(Application.persistentDataPath, "GameAnalytics.json");
+    //Path for file
+    public static string filePath;
 
     //Function for saving the new event to the JSON file
     public static void SaveEvent(List<string> eventData)

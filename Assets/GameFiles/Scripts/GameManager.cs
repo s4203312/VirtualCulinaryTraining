@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameCanvases;
 
     public GameObject recipe;
+    private string filePath;
 
     public GameObject spaceInFridge;
     public GameObject itemInFridge;
@@ -18,6 +20,11 @@ public class GameManager : MonoBehaviour
     {
         FindAllCameras();
         SetUpPlayer();
+
+        //File path that works with any machine not just a local path and individual to user
+        string usersName = PlayerPrefs.GetString("UsersName");
+        filePath = Path.Combine(Application.persistentDataPath, usersName + "Analytics.json");
+        FileManager.filePath = filePath;
     }
 
     public void FindAllCameras()
