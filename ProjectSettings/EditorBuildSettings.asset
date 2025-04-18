@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GameFiles/MainLevel.unity
     guid: 03eaa6ae8787fd9438920ff70af9c7ba
+  - enabled: 1
+    path: Assets/GameFiles/Feedback.unity
+    guid: f6b2d4bf3eaebd74ab295295db1a2c9e
   m_configObjects: {}

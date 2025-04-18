@@ -12,7 +12,6 @@ public class Menu : MonoBehaviour
     //Changing the scene to start the game
     public void StartGame()
     {
-
         usersName = userNameInput.text.Trim();       //Removing spaces from end
         if(!string.IsNullOrEmpty(usersName))
         {
@@ -22,6 +21,19 @@ public class Menu : MonoBehaviour
 
             SceneManager.LoadScene(1);
         }
+    }
+
+    public void LoadFeedback()
+    {
+        SceneManager.LoadScene(2);
+    }
+    public void RetryTraining()
+    {
+        SceneManager.LoadScene(1);
+    }
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 
     //Exiting the application
