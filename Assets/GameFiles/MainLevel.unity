@@ -1278,7 +1278,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlicingManager: {fileID: 0}
-  choppingEvent: {fileID: 11400000, guid: 607c0b4f2bc67644c8580a5f61e326f2, type: 2}
+  choppingEvent: {fileID: 0}
+  saucesEvent: {fileID: 11400000, guid: 8e50b888881e7114bad190fa5c4e9a93, type: 2}
 --- !u!65 &450671884
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6064,7 +6065,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlicingManager: {fileID: 0}
-  choppingEvent: {fileID: 11400000, guid: 607c0b4f2bc67644c8580a5f61e326f2, type: 2}
+  choppingEvent: {fileID: 0}
+  saucesEvent: {fileID: 11400000, guid: 8e50b888881e7114bad190fa5c4e9a93, type: 2}
 --- !u!1 &1745194132 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5489145493786919654, guid: c331d4509e2a94446b4dedf64fcae8dd,
@@ -6085,6 +6087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SlicingManager: {fileID: 1569259369}
   choppingEvent: {fileID: 11400000, guid: 607c0b4f2bc67644c8580a5f61e326f2, type: 2}
+  saucesEvent: {fileID: 0}
 --- !u!1001 &1745377006
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6686,6 +6689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   choppingEvent: {fileID: 11400000, guid: 607c0b4f2bc67644c8580a5f61e326f2, type: 2}
+  saucesEvent: {fileID: 11400000, guid: 8e50b888881e7114bad190fa5c4e9a93, type: 2}
 --- !u!1 &1921855848
 GameObject:
   m_ObjectHideFlags: 0

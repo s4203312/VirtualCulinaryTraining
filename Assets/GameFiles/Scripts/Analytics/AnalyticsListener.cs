@@ -8,9 +8,11 @@ public class AnalyticsListener : MonoBehaviour
 {
     //Events
     public ChoppingEvent choppingEvent;
+    public SaucesEvent saucesEvent;
 
     //Event listeners
     private GameEventListener<ChoppingEventData> choppingListener;
+    private GameEventListener<SaucesEventData> saucesListener;
 
     private async void Awake()
     {
@@ -22,24 +24,23 @@ public class AnalyticsListener : MonoBehaviour
     {
         //Creating listeners
         choppingListener = new InlineListener<ChoppingEventData>(OnChoppingBoardUsed);
+        saucesListener = new InlineListener<SaucesEventData>(OnSpoonUsed);
 
         //Registering listener to event
         choppingEvent.RegisterListener(choppingListener);
+        saucesEvent.RegisterListener(saucesListener);
     }
 
     private void OnDisable()
     {
         //Removing the listeners from the events
         choppingEvent.UnregisterListener(choppingListener);
+        saucesEvent.UnregisterListener(saucesListener);
     }
 
     //Function for storing data when using chopping board
     private void OnChoppingBoardUsed(ChoppingEventData data)
     {
-        Debug.Log(data.boardColour);
-        Debug.Log(data.cutItemName);
-        Debug.Log(data.isCorrect);
-
         //Storing data in analytic event
         var UAChopping = new UnityAnalyticChopping
         {
@@ -52,11 +53,32 @@ public class AnalyticsListener : MonoBehaviour
         //Storing data in JSON
         List<string> allData = new List<string>
         {
-            "Chopping Board Event:",
             data.boardColour,
             data.cutItemName,
             data.isCorrect.ToString()
         };
-        FileManager.SaveEvent(allData);
+        FileManager.SaveEvent("Chopping Board Event:", allData);
+    }
+
+    //Function for storing data when using spoons
+    private void OnSpoonUsed(SaucesEventData data)
+    {
+        //Storing data in analytic event
+        //var UAChopping = new UnityAnalyticChopping
+        //{
+            //boardColour = data.boardColour,
+            //cutItemName = data.cutItemName,
+            //isCorrect = data.isCorrect
+        //};
+        //AnalyticsService.Instance.RecordEvent(UAChopping);    //Recording the information
+
+        //Storing data in JSON
+        List<string> allData = new List<string>
+        {
+            data.amount,
+            data.sauceName,
+            data.isCorrect.ToString()
+        };
+        FileManager.SaveEvent("Sauces Event:", allData);
     }
 }

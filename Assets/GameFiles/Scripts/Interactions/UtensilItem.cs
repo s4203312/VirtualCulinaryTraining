@@ -12,6 +12,7 @@ public class UtensilItem : MonoBehaviour
 
     //Analytic collection
     public ChoppingEvent choppingEvent;
+    public SaucesEvent saucesEvent;
 
     public void Update()
     {
@@ -93,6 +94,9 @@ public class UtensilItem : MonoBehaviour
             {
                 if (collider.transform.tag == "MixingBowl")
                 {
+                    //Analytic storage
+                    StoreSauceInfo(sauceSelected.GetComponent<SauceObjectStorage>().amountOfSauce.ToString(), sauceSelected.transform.name);
+
                     sauceSelected.transform.position = collider.transform.position;
                     sauceSelected.transform.parent = collider.transform;            //Changing parent to mixing bowl
                     sauceInSpoon = false;
@@ -106,11 +110,45 @@ public class UtensilItem : MonoBehaviour
     //Storing analytics information
     public void StoreChoppingInfo(string boardColor, string itemName)
     {
+        bool correctBoard = false;
+        //Checking if correct board was used
+        if(itemName == "MinceBeef" && boardColor == "Red")
+        {
+            correctBoard = true;
+        }
+        else if(itemName != "MinceBeef" && boardColor == "Green")
+        {
+            correctBoard = true;
+        }
+
+        //Raising the event to be called and analytics to be stored
         choppingEvent.Raise(new ChoppingEventData
         {
             boardColour = boardColor,
             cutItemName = itemName,
-            isCorrect = true
+            isCorrect = correctBoard
+        });
+    }
+    //Storing analytics information
+    public void StoreSauceInfo(string amount, string sauceName)
+    {
+        //bool correctAmount = false;
+        //Checking if correct board was used
+        //if (sauceName == "MinceBeef" && amount == "Red")
+        //{
+        //    correctBoard = true;
+        //}
+        //else if (itemName != "MinceBeef" && boardColor == "Green")
+        //{
+        //    correctBoard = true;
+        //}
+
+        //Raising the event to be called and analytics to be stored
+        saucesEvent.Raise(new SaucesEventData
+        {
+            amount = amount,
+            sauceName = sauceName,
+            isCorrect = true        //Need work
         });
     }
 }
