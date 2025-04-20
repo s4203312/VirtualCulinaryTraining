@@ -3189,7 +3189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userNameInput: {fileID: 1125439629}
-  userName: 
 --- !u!1 &1704073173
 GameObject:
   m_ObjectHideFlags: 0
