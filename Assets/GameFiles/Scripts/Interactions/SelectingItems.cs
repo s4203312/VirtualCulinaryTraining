@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class SelectingItems : MonoBehaviour
     public SlicingManager slicingManager;
     public PrepManager prepManager;
     public SaucesManager saucesManager;
+    public FryingManager fryingManager;
     
     public GameObject selectedItem = null;
 
@@ -89,6 +91,20 @@ public class SelectingItems : MonoBehaviour
                     zPosition = GetComponent<Camera>().WorldToScreenPoint(selectedItem.transform.position).z; //Locks the z position
                     offset = selectedItem.transform.position - GetMouseWorldPosition();
                 }
+                else if (hit.collider.CompareTag("Fryable"))            //Selecting burgers and bacon
+                {
+                    if(hit.transform.GetComponent<ItemFrying>().enabled == false)
+                    {
+                        hit.transform.GetComponent<ItemFrying>().enabled = true;    //Starting process. Putting into pan
+                    }
+                    else
+                    {
+                        string itemName = hit.transform.GetComponent<ItemFrying>().itemName;
+                        Debug.Log("Burger in pan: " + hit.transform.GetComponent<ItemFrying>().timeInPan);
+                        hit.transform.GetComponent<ItemFrying>().enabled = false;
+                        fryingManager.MoveItemToPrep(itemName, hit.transform.gameObject);
+                    }
+                }
             }
         }
     }
@@ -109,16 +125,15 @@ public class SelectingItems : MonoBehaviour
     private IEnumerator moveBowl(GameObject preppedItem)
     {
         yield return new WaitForSeconds(1f);
-        if(preppedItem.TryGetComponent<SauceObjectStorage>(out SauceObjectStorage sauceScript))      //Lettuce going to sauce station
+        if(preppedItem.TryGetComponent(out SauceObjectStorage sauceScript))      //Lettuce going to sauce station
         {
             Destroy(preppedItem.GetComponent<SliceableObject>());
             preppedItem.tag = "Sauce";
             preppedItem.transform.position = saucesManager.lettuceBowl.transform.position + saucesManager.lettuceBowl.transform.up * 0.1f;
         }
-        else if(preppedItem.TryGetComponent<placeHolderFrying>(out placeHolderFrying fryScript))                       //Burgers going to fridge
+        else if(preppedItem.TryGetComponent(out placeHolderFrying fryScript))                       //Burgers going to fridge
         {
             Destroy(preppedItem.GetComponent<SliceableObject>());
-            preppedItem.tag = "Fryable";
             preppedItem.transform.position = gameManager.spaceInFridge.transform.position;
             gameManager.itemInFridge = preppedItem;
             gameManager.isInFridge = true;

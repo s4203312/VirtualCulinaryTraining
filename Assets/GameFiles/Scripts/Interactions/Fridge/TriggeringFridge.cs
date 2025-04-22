@@ -24,6 +24,7 @@ public class TriggeringFridge : MonoBehaviour
             && Manager.isInFridge)
         {
             //Burger move functionality
+            Manager.itemInFridge.tag = "Fryable";
             Manager.itemInFridge.transform.position = burgerPosByPan.position;
             Manager.itemInFridge.transform.rotation = burgerPosByPan.rotation;
             Debug.Log("Burger move");

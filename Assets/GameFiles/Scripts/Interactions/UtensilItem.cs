@@ -43,21 +43,24 @@ public class UtensilItem : MonoBehaviour
             {
                 if(collider.transform.TryGetComponent<SliceableObject>(out SliceableObject sliceableObject))
                 {
-                    //Analytic storage
-                    StoreChoppingInfo(SlicingManager.choppingBoardColour, collider.transform.name);
-
-                    GameObject slicedObject = sliceableObject.slicedVersion;
-
-                    //Creating the cut version of the object
-                    GameObject newItem = Instantiate(slicedObject, collider.transform.position, Quaternion.identity);
-                    //newItem.transform.localScale = collider.transform.localScale;
-                    if(!newItem.TryGetComponent<SliceableObject>(out SliceableObject sliced))
+                    if(sliceableObject.slicedVersion != null)
                     {
-                        sliced = newItem.AddComponent<SliceableObject>();
+                        //Analytic storage
+                        StoreChoppingInfo(SlicingManager.choppingBoardColour, collider.transform.name);
+
+                        GameObject slicedObject = sliceableObject.slicedVersion;
+
+                        //Creating the cut version of the object
+                        GameObject newItem = Instantiate(slicedObject, collider.transform.position, Quaternion.identity);
+                        //newItem.transform.localScale = collider.transform.localScale;
+                        if (!newItem.TryGetComponent<SliceableObject>(out SliceableObject sliced))
+                        {
+                            sliced = newItem.AddComponent<SliceableObject>();
+                        }
+                        sliced.hasBeenSliced = true;
+                        newItem.tag = collider.transform.tag;
+                        Destroy(collider.gameObject);
                     }
-                    sliced.hasBeenSliced = true;
-                    newItem.tag = collider.transform.tag;
-                    Destroy(collider.gameObject);
                 }
             }
         }
