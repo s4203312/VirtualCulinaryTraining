@@ -92,7 +92,7 @@ public class UtensilItem : MonoBehaviour
         }
         else
         {
-            Collider[] collidedObject = Physics.OverlapSphere(transform.position, 1f);
+            Collider[] collidedObject = Physics.OverlapSphere(transform.position, 0.05f);
             foreach (Collider collider in collidedObject)
             {
                 if (collider.transform.tag == "MixingBowl")
