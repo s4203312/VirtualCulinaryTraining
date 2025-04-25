@@ -13,3 +13,19 @@ public struct SaucesEventData   //Data being stored for the sauces event
     public bool isCorrect;
 }
 
+public struct FryingEventData   //Data being stored for the frying event
+{
+    public string cookingTime;
+    public string itemName;
+    public bool isCorrect;
+}
+
+public struct CheeseEventData   //Data being stored for correctly remembering cheese
+{
+    public bool isCorrect;
+}
+
+public struct FridgeEventData   //Data being stored for correctly closing fridge
+{
+    public bool isCorrect;
+}

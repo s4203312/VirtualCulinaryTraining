@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -56,54 +57,15 @@ public class SelectingItems : MonoBehaviour
             {
                 if (hit.collider.CompareTag("PickUpFood"))      //Unable to move food just select it
                 {
-                    if (hit.transform.GetComponent<SliceableObject>().hasBeenSliced)    //Moving sliced items to bowl
-                    {
-                        selectedItem = hit.collider.gameObject;
-                        selectedItem.transform.position = slicingManager.finishedBowl.transform.position + slicingManager.finishedBowl.transform.up * 0.1f;
-                        StartCoroutine(moveBowl(selectedItem));
-
-                        //Reseting variables
-                        slicingManager.itemOnBoard = null;
-                    }
-                    else
-                    {
-                        if (slicingManager.itemOnBoard != null)            //Putting item back
-                        {
-                            slicingManager.itemOnBoard.transform.position = slicingManager.itemOnBoardOldPos;
-                        }
-
-                        //Selecting the item
-                        selectedItem = hit.collider.gameObject;
-                        slicingManager.itemOnBoardOldPos = selectedItem.transform.position;
-                        slicingManager.itemOnBoard = selectedItem;
-
-                        //Moving item to board
-                        selectedItem.transform.position = slicingManager.choppingBoard.transform.position + slicingManager.choppingBoard.transform.up * 0.1f;
-                    }
+                    PickUpFood(hit);
                 }
                 else if (hit.collider.CompareTag("PickUpUtensil"))      //Able to move utensils
                 {
-                    itemInHand = true;
-                    selectedItem = hit.collider.gameObject;
-                    utensilOldPos = selectedItem.transform.position;
-                    selectedItem.GetComponent<UtensilItem>().enabled = true;
-
-                    zPosition = GetComponent<Camera>().WorldToScreenPoint(selectedItem.transform.position).z; //Locks the z position
-                    offset = selectedItem.transform.position - GetMouseWorldPosition();
+                    PickUpUtensil(hit);
                 }
                 else if (hit.collider.CompareTag("Fryable"))            //Selecting burgers and bacon
                 {
-                    if(hit.transform.GetComponent<ItemFrying>().enabled == false)
-                    {
-                        hit.transform.GetComponent<ItemFrying>().enabled = true;    //Starting process. Putting into pan
-                    }
-                    else
-                    {
-                        string itemName = hit.transform.GetComponent<ItemFrying>().itemName;
-                        Debug.Log("Burger in pan: " + hit.transform.GetComponent<ItemFrying>().timeInPan);
-                        hit.transform.GetComponent<ItemFrying>().enabled = false;
-                        fryingManager.MoveItemToPrep(itemName, hit.transform.gameObject);
-                    }
+                    PickUpFryable(hit);
                 }
             }
         }
@@ -145,4 +107,57 @@ public class SelectingItems : MonoBehaviour
         }
         yield return null;
     } 
+
+    //Functions for interactions
+    private void PickUpFood(RaycastHit hit)
+    {
+        if (hit.transform.GetComponent<SliceableObject>().hasBeenSliced)    //Moving sliced items to bowl
+        {
+            selectedItem = hit.collider.gameObject;
+            selectedItem.transform.position = slicingManager.finishedBowl.transform.position + slicingManager.finishedBowl.transform.up * 0.1f;
+            StartCoroutine(moveBowl(selectedItem));
+
+            //Reseting variables
+            slicingManager.itemOnBoard = null;
+        }
+        else
+        {
+            if (slicingManager.itemOnBoard != null)            //Putting item back
+            {
+                slicingManager.itemOnBoard.transform.position = slicingManager.itemOnBoardOldPos;
+            }
+
+            //Selecting the item
+            selectedItem = hit.collider.gameObject;
+            slicingManager.itemOnBoardOldPos = selectedItem.transform.position;
+            slicingManager.itemOnBoard = selectedItem;
+
+            //Moving item to board
+            selectedItem.transform.position = slicingManager.choppingBoard.transform.position + slicingManager.choppingBoard.transform.up * 0.1f;
+        }
+    }
+    private void PickUpUtensil(RaycastHit hit)
+    {
+        itemInHand = true;
+        selectedItem = hit.collider.gameObject;
+        utensilOldPos = selectedItem.transform.position;
+        selectedItem.GetComponent<UtensilItem>().enabled = true;
+
+        zPosition = GetComponent<Camera>().WorldToScreenPoint(selectedItem.transform.position).z; //Locks the z position
+        offset = selectedItem.transform.position - GetMouseWorldPosition();
+    } 
+    private void PickUpFryable(RaycastHit hit) 
+    {
+        if (hit.transform.GetComponent<ItemFrying>().enabled == false)
+        {
+            hit.transform.GetComponent<ItemFrying>().enabled = true;    //Starting process. Putting into pan
+        }
+        else
+        {
+            string itemName = hit.transform.GetComponent<ItemFrying>().itemName;            //Taking fry item out
+            Debug.Log(itemName + hit.transform.GetComponent<ItemFrying>().timeInPan);
+            hit.transform.GetComponent<ItemFrying>().enabled = false;
+            fryingManager.MoveItemToPrep(itemName, hit.transform.gameObject);
+        }
+    }
 }
