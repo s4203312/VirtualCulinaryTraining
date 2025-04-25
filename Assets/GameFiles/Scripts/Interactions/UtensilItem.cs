@@ -132,7 +132,7 @@ public class UtensilItem : MonoBehaviour
             isCorrect = correctBoard
         });
     }
-    //Storing analytics information
+
     public void StoreSauceInfo(string amount, string sauceName)
     {
         //bool correctAmount = false;

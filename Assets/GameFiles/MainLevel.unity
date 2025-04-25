@@ -5159,6 +5159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Manager: {fileID: 1188477550}
+  fridgeEvent: {fileID: 11400000, guid: 9772bb00fdcf2b041b215170ce74e89c, type: 2}
   fridge: {fileID: 1606035514}
   currentlyMoving: 0
   burgerPosByPan: {fileID: 1402097584}
@@ -7161,6 +7162,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   choppingEvent: {fileID: 11400000, guid: 607c0b4f2bc67644c8580a5f61e326f2, type: 2}
   saucesEvent: {fileID: 11400000, guid: 8e50b888881e7114bad190fa5c4e9a93, type: 2}
+  fryingEvent: {fileID: 11400000, guid: ceba1c56057f47442b89e6301e4058c7, type: 2}
+  fridgeEvent: {fileID: 11400000, guid: 9772bb00fdcf2b041b215170ce74e89c, type: 2}
+  cheeseEvent: {fileID: 11400000, guid: a8c34efad3bc3654fa18f8637b4e0b6c, type: 2}
 --- !u!1 &1896036423
 GameObject:
   m_ObjectHideFlags: 0

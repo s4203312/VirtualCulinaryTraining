@@ -9,10 +9,16 @@ public class AnalyticsListener : MonoBehaviour
     //Events
     public ChoppingEvent choppingEvent;
     public SaucesEvent saucesEvent;
+    public FryingEvent fryingEvent;
+    public FridgeEvent fridgeEvent;
+    public CheeseEvent cheeseEvent;
 
     //Event listeners
     private GameEventListener<ChoppingEventData> choppingListener;
     private GameEventListener<SaucesEventData> saucesListener;
+    private GameEventListener<FryingEventData> fryingListener;
+    private GameEventListener<FridgeEventData> fridgeListener;
+    private GameEventListener<CheeseEventData> cheeseListener;
 
     private async void Awake()
     {
@@ -25,10 +31,16 @@ public class AnalyticsListener : MonoBehaviour
         //Creating listeners
         choppingListener = new InlineListener<ChoppingEventData>(OnChoppingBoardUsed);
         saucesListener = new InlineListener<SaucesEventData>(OnSpoonUsed);
+        fryingListener = new InlineListener<FryingEventData>(OnFryerUsed);
+        fridgeListener = new InlineListener<FridgeEventData>(OnFridgeUsed);
+        cheeseListener = new InlineListener<CheeseEventData>(OnCheeseUsed);
 
         //Registering listener to event
         choppingEvent.RegisterListener(choppingListener);
         saucesEvent.RegisterListener(saucesListener);
+        fryingEvent.RegisterListener(fryingListener);
+        fridgeEvent.RegisterListener(fridgeListener);
+        cheeseEvent.RegisterListener(cheeseListener);
     }
 
     private void OnDisable()
@@ -36,6 +48,9 @@ public class AnalyticsListener : MonoBehaviour
         //Removing the listeners from the events
         choppingEvent.UnregisterListener(choppingListener);
         saucesEvent.UnregisterListener(saucesListener);
+        fryingEvent.UnregisterListener(fryingListener);
+        fridgeEvent.UnregisterListener(fridgeListener);
+        cheeseEvent.UnregisterListener(cheeseListener);
     }
 
     //Function for storing data when using chopping board
@@ -64,13 +79,6 @@ public class AnalyticsListener : MonoBehaviour
     private void OnSpoonUsed(SaucesEventData data)
     {
         //Storing data in analytic event
-        //var UAChopping = new UnityAnalyticChopping
-        //{
-            //boardColour = data.boardColour,
-            //cutItemName = data.cutItemName,
-            //isCorrect = data.isCorrect
-        //};
-        //AnalyticsService.Instance.RecordEvent(UAChopping);    //Recording the information
 
         //Storing data in JSON
         List<string> allData = new List<string>
@@ -80,5 +88,46 @@ public class AnalyticsListener : MonoBehaviour
             data.isCorrect.ToString()
         };
         FileManager.SaveEvent("Sauces Event:", allData);
+    }
+
+    //Function for storing data when using fryers
+    private void OnFryerUsed(FryingEventData data)
+    {
+        //Storing data in analytic event
+
+        //Storing data in JSON
+        List<string> allData = new List<string>
+        {
+            data.cookingTime,
+            data.itemName,
+            data.isCorrect.ToString()
+        };
+        FileManager.SaveEvent("Frying Event:", allData);
+    }
+
+    //Function for storing data when using fridge
+    private void OnFridgeUsed(FridgeEventData data)
+    {
+        //Storing data in analytic event
+
+        //Storing data in JSON
+        List<string> allData = new List<string>
+        {
+            data.isCorrect.ToString()
+        };
+        FileManager.SaveEvent("Fridge Event:", allData);
+    }
+
+    //Function for storing data when using cheese
+    private void OnCheeseUsed(CheeseEventData data)
+    {
+        //Storing data in analytic event
+
+        //Storing data in JSON
+        List<string> allData = new List<string>
+        {
+            data.isCorrect.ToString()
+        };
+        FileManager.SaveEvent("Cheese Event:", allData);
     }
 }

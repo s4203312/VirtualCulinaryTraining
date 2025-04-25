@@ -34,7 +34,6 @@ public class FileManager
         }
 
         string json = JsonUtility.ToJson(wrapper, true);        //Converting to JSON using the serialised the list
-        Debug.Log(json);
 
         File.WriteAllText(filePath, json);
     }
