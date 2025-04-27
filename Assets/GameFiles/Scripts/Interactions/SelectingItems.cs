@@ -21,6 +21,10 @@ public class SelectingItems : MonoBehaviour
     private float zPosition;
     private Vector3 offset;
 
+    //Analytic collection
+    public FryingEvent fryingEvent;
+    public CheeseEvent cheeseEvent;
+
 
     private void Update()
     {
@@ -155,9 +159,50 @@ public class SelectingItems : MonoBehaviour
         else
         {
             string itemName = hit.transform.GetComponent<ItemFrying>().itemName;            //Taking fry item out
-            Debug.Log(itemName + hit.transform.GetComponent<ItemFrying>().timeInPan);
+            if (itemName == "Burger")
+            {
+                if (!hit.transform.GetChild(2))
+                {
+                    //Analytic storage
+                    StoreCheeseInfo(false);
+                }
+            }
+
+            //Analytic storage
+            StoreFryingInfo(hit.transform.GetComponent<ItemFrying>().timeInPan, itemName);
+
+            hit.transform.GetComponent<ItemFrying>().timeInPan = 0;
             hit.transform.GetComponent<ItemFrying>().enabled = false;
             fryingManager.MoveItemToPrep(itemName, hit.transform.gameObject);
         }
+    }
+
+
+    //Storing analytics information
+    public void StoreFryingInfo(float time, string itemName)
+    {
+        bool correctCooking = false;
+        //Checking if correct time was taken
+        if (time < 20 && time > 10)
+        {
+            correctCooking = true;
+        }
+
+        //Raising the event to be called and analytics to be stored
+        fryingEvent.Raise(new FryingEventData
+        {
+            cookingTime = time.ToString(),
+            itemName = itemName,
+            isCorrect = correctCooking
+        });
+    }
+
+    public void StoreCheeseInfo(bool isCorrect)
+    {
+        //Raising the event to be called and analytics to be stored
+        cheeseEvent.Raise(new CheeseEventData
+        {
+            isCorrect = isCorrect
+        });
     }
 }

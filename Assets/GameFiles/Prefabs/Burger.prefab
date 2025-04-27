@@ -81,8 +81,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Burger
-  colouredBurger: {fileID: 2100000, guid: 0ecbbfc2a2a47b24da84d2f617427c96, type: 2}
-  burntBurger: {fileID: 2100000, guid: ef6fed5a9533c90499ba86a921b6e21d, type: 2}
+  colouredItem: {fileID: 2100000, guid: 0ecbbfc2a2a47b24da84d2f617427c96, type: 2}
+  burntItem: {fileID: 2100000, guid: ef6fed5a9533c90499ba86a921b6e21d, type: 2}
+  progressBarImg: {fileID: 0}
   timeInPan: 0
 --- !u!1 &5232456694367022030
 GameObject:

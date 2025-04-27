@@ -13,7 +13,8 @@ public class FryingManager : MonoBehaviour
     public GameObject burgerPlatingPos;
     public GameObject baconPlatingPos;
 
-    public Image progressBarImg;
+    public Image burgerProgressBar;
+    public Image baconProgressBar;
 
     public void MoveItemToPrep(string itemName, GameObject itemHit)
     {
@@ -21,13 +22,13 @@ public class FryingManager : MonoBehaviour
         {
             itemHit.transform.position = burgerPlatingPos.transform.position;
         }
-        else
+        else if(itemName == "Bacon")
         {
             itemHit.transform.position = baconPlatingPos.transform.position;
         }
     }
 
-    public void ProgressBar(float currentTime)
+    public void ProgressBar(float currentTime, Image progressBarImg)
     {
         float burntTime = 20f;
         if(currentTime >= burntTime)

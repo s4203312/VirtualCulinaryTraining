@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using TMPro;
+using System.Globalization;
 
 public class Feedback : MonoBehaviour
 {
@@ -28,52 +29,112 @@ public class Feedback : MonoBehaviour
         return JsonUtility.FromJson<AnalyticsWrapper>(json);        //Deserialising the list so unity can read it again
     }
 
+    private void ProvideFeedback()
+    {
+        //Try doing some resizing stuff here to ensure text fits
+        feedbackBox.text = finalFeedback;
+    }
+
     private void CreateFeedback(AnalyticsWrapper savedInfo)
     {
-        foreach(var anaEvent in savedInfo.events)
+        finalFeedback = "Feedback From Training:";
+
+        foreach (var anaEvent in savedInfo.events)
         {
             for (int i = 0; i < anaEvent.eventData.Count; i++)
-            {    
-                if(anaEvent.eventName == "Chopping Board Event:")
+            {
+                switch (anaEvent.eventName)
                 {
-                    if (anaEvent.eventData[i] == "False")
-                    {
-                        //Retrieving the incorrect data
-                        incorrectName = anaEvent.eventData[i - 1].ToString();
-                        incorrectValue = anaEvent.eventData[i - 2].ToString();
-
-                        string correctBoard;
-                        if (incorrectName == "MinceBeef")
-                        {
-                            correctBoard = "Red";
-                        }
-                        else
-                        {
-                            correctBoard = "Green";
-                        }
-
-                        finalFeedback = finalFeedback + "\n" + "You incorrectly chopped a " + incorrectName + " using a " + incorrectValue 
-                                        + " chopping board. Next time use a " + correctBoard + " chopping board for the " + incorrectName;
-                    }
-                }
-                if (anaEvent.eventName == "Sauces Event:")
-                {
-                    if (anaEvent.eventData[i] == "False")
-                    {
-                        //Retrieving the incorrect data
-                        incorrectName = anaEvent.eventData[i - 1].ToString();
-                        incorrectValue = anaEvent.eventData[i - 2].ToString();
-
-                        //Add feedback
-                    }
+                    case "Chopping Board Event:":
+                        ChoppingData(anaEvent, i);
+                        break;
+                    case "Sauces Event:":
+                        SaucesData(anaEvent, i);
+                        break;
+                    case "Frying Event:":
+                        FryingData(anaEvent, i);
+                        break;
+                    case "Fridge Event:":
+                        FridgeData(anaEvent, i);
+                        break;
+                    case "Cheese Event:":
+                        CheeseData(anaEvent, i);
+                        break;
+                    default:
+                        finalFeedback = "\n You completed the training perfectly with no errors well done"; 
+                        break;
                 }
             }
         }
     }
 
-    private void ProvideFeedback()
+    public void ChoppingData(AnalyticsEvent anaEvent, int pos)
     {
-        //Try doing some resizing stuff here to ensure text fits
-        feedbackBox.text = finalFeedback;
+        if (anaEvent.eventData[pos] == "False")
+        {
+            //Retrieving the incorrect data
+            incorrectName = anaEvent.eventData[pos - 1].ToString();
+            incorrectValue = anaEvent.eventData[pos - 2].ToString();
+
+            string correctBoard;
+            if (incorrectName == "MinceBeef")
+            {
+                correctBoard = "Red";
+            }
+            else
+            {
+                correctBoard = "Green";
+            }
+
+            finalFeedback = finalFeedback + "\n" + "You incorrectly chopped a " + incorrectName + " using a " + incorrectValue
+                            + " chopping board. Next time use a " + correctBoard + " chopping board for the " + incorrectName;
+        }
+    }
+    public void SaucesData(AnalyticsEvent anaEvent, int pos)
+    {
+        if (anaEvent.eventData[pos] == "False")
+        {
+            //Retrieving the incorrect data
+            incorrectName = anaEvent.eventData[pos - 1].ToString();
+            incorrectValue = anaEvent.eventData[pos - 2].ToString();
+
+            //Add feedback
+        }
+    }
+    public void FryingData(AnalyticsEvent anaEvent, int pos)
+    {
+        if (anaEvent.eventData[pos] == "False")
+        {
+            //Retrieving the incorrect data
+            incorrectName = anaEvent.eventData[pos - 1].ToString();
+            incorrectValue = anaEvent.eventData[pos - 2].ToString();
+
+            string cookedLevel = null;
+            if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) > 20)
+            {
+                cookedLevel = "burnt";
+            }
+            else if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) < 10)
+            {
+                cookedLevel = "under cooked";
+            }
+
+            finalFeedback = finalFeedback + "\n" + "You incorrectly cooked the " + incorrectName + " You cooked the " + incorrectName
+                            + " for " + incorrectValue + " seconds this resulted in a " + cookedLevel + " " + incorrectName;
+        }
+    }
+    public void CheeseData(AnalyticsEvent anaEvent, int pos)
+    {
+        if (anaEvent.eventData[pos] == "False")
+        {
+            finalFeedback = finalFeedback + "\n" + "You forgot to add the cheese to the burger";
+        }
+    }
+    public void FridgeData(AnalyticsEvent anaEvent, int pos)
+    {
+        if (anaEvent.eventData[pos] == "False")
+        {
+            finalFeedback = finalFeedback + "\n" + "You forgot to close the fridge after taking the burgers out"; 
+        }
     }
 }
