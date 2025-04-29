@@ -29,3 +29,13 @@ public struct FridgeEventData   //Data being stored for correctly closing fridge
 {
     public bool isCorrect;
 }
+
+public struct PreppingEventData   //Data being stored for correctly prepping all items
+{
+    public bool isCorrect;
+}
+
+public struct PlatingEventData   //Data being stored for correctly plating the burger
+{
+    public bool isCorrect;
+}

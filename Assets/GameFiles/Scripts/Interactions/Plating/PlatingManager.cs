@@ -17,6 +17,10 @@ public class PlatingManager : MonoBehaviour
 
     private bool correct;
 
+    //Analytic collection
+    public PlatingEvent platingEvent;
+    public PreppingEvent preppingEvent;
+
     public void UpdateIngredients()
     {
         int i = 0;
@@ -32,12 +36,16 @@ public class PlatingManager : MonoBehaviour
         {
             CreatingCorrectOrder();
             correct = true;
+
             //Analytics for prepping everything correctly
+            StorePreppingInfo(true);
         }
         else
         {
             correct = false;        //Cant get the order correct without all ingredients
-            //For incorrect
+
+            //Analytics for incorrectly prepping
+            StorePreppingInfo(false);
         }
 
         
@@ -79,23 +87,48 @@ public class PlatingManager : MonoBehaviour
     public void CheckPositions()
     {
         int i = 0;
-        foreach(GameObject item in playerPlatingOrder)
+        if (correct)
         {
-            if (item != correctPlatingOrder[i])
+            foreach (GameObject item in playerPlatingOrder)
             {
-                correct = false;
+                if (item != correctPlatingOrder[i])
+                {
+                    correct = false;
+                }
+                i++;
             }
-            i++;
         }
+        
 
         if(correct)
         {
-            Debug.Log("correct");
             //Analytics for correct plating
+            StorePlatingInfo(true);
         }
         else
         {
             //Analytics for wrong plating 
+            StorePlatingInfo(false);
         }
-    }  
+    }
+
+
+    //Storing analytics information
+    public void StorePreppingInfo(bool isCorrect)
+    {
+        //Raising the event to be called and analytics to be stored
+        preppingEvent.Raise(new PreppingEventData
+        {
+            isCorrect = isCorrect
+        });
+    }
+    public void StorePlatingInfo(bool isCorrect)
+    {
+        //Raising the event to be called and analytics to be stored
+        platingEvent.Raise(new PlatingEventData
+        {
+            isCorrect = isCorrect
+        });
+
+    }
 }

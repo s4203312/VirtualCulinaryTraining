@@ -60,6 +60,12 @@ public class Feedback : MonoBehaviour
                     case "Cheese Event:":
                         CheeseData(anaEvent, i);
                         break;
+                    case "Prepping Event:":
+                        PreppingData(anaEvent, i);
+                        break;
+                    case "Plating Event:":
+                        PlatingData(anaEvent, i);
+                        break;
                     default:
                         finalFeedback = "\n You completed the training perfectly with no errors well done"; 
                         break;
@@ -135,6 +141,20 @@ public class Feedback : MonoBehaviour
         if (anaEvent.eventData[pos] == "False")
         {
             finalFeedback = finalFeedback + "\n" + "You forgot to close the fridge after taking the burgers out"; 
+        }
+    }
+    public void PreppingData(AnalyticsEvent anaEvent, int pos)
+    {
+        if (anaEvent.eventData[pos] == "False")
+        {
+            finalFeedback = finalFeedback + "\n" + "You forgot to prep items that are required in the recipe";
+        }
+    }
+    public void PlatingData(AnalyticsEvent anaEvent, int pos)
+    {
+        if (anaEvent.eventData[pos] == "False")
+        {
+            finalFeedback = finalFeedback + "\n" + "You incorrectly plated the burger";
         }
     }
 }

@@ -7169,6 +7169,8 @@ MonoBehaviour:
   burgerSauce: {fileID: 0}
   correctPlatingOrder: []
   playerPlatingOrder: []
+  platingEvent: {fileID: 11400000, guid: 9337242c2788ead44ba74ed047f72842, type: 2}
+  preppingEvent: {fileID: 11400000, guid: f6e6544eb64a7184ebba8e82590e4e84, type: 2}
 --- !u!4 &1327945317
 Transform:
   m_ObjectHideFlags: 0
@@ -10931,6 +10933,8 @@ MonoBehaviour:
   fryingEvent: {fileID: 11400000, guid: ceba1c56057f47442b89e6301e4058c7, type: 2}
   fridgeEvent: {fileID: 11400000, guid: 9772bb00fdcf2b041b215170ce74e89c, type: 2}
   cheeseEvent: {fileID: 11400000, guid: a8c34efad3bc3654fa18f8637b4e0b6c, type: 2}
+  preppingEvent: {fileID: 11400000, guid: f6e6544eb64a7184ebba8e82590e4e84, type: 2}
+  platingEvent: {fileID: 11400000, guid: 9337242c2788ead44ba74ed047f72842, type: 2}
 --- !u!1 &1856749158
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         string usersName = PlayerPrefs.GetString("UsersName");
         filePath = Path.Combine(Application.persistentDataPath, usersName + "Analytics.json");
         FileManager.filePath = filePath;
+        File.WriteAllText(filePath, "{}");
     }
 
     public void FindAllCameras()

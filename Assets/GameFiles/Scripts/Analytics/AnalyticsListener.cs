@@ -12,6 +12,8 @@ public class AnalyticsListener : MonoBehaviour
     public FryingEvent fryingEvent;
     public FridgeEvent fridgeEvent;
     public CheeseEvent cheeseEvent;
+    public PreppingEvent preppingEvent;
+    public PlatingEvent platingEvent;
 
     //Event listeners
     private GameEventListener<ChoppingEventData> choppingListener;
@@ -19,6 +21,8 @@ public class AnalyticsListener : MonoBehaviour
     private GameEventListener<FryingEventData> fryingListener;
     private GameEventListener<FridgeEventData> fridgeListener;
     private GameEventListener<CheeseEventData> cheeseListener;
+    private GameEventListener<PlatingEventData> platingListener;
+    private GameEventListener<PreppingEventData> preppingListener;
 
     private async void Awake()
     {
@@ -34,6 +38,8 @@ public class AnalyticsListener : MonoBehaviour
         fryingListener = new InlineListener<FryingEventData>(OnFryerUsed);
         fridgeListener = new InlineListener<FridgeEventData>(OnFridgeUsed);
         cheeseListener = new InlineListener<CheeseEventData>(OnCheeseUsed);
+        preppingListener = new InlineListener<PreppingEventData>(OnPreppingUsed);
+        platingListener = new InlineListener<PlatingEventData>(OnPlatingUsed);
 
         //Registering listener to event
         choppingEvent.RegisterListener(choppingListener);
@@ -41,6 +47,8 @@ public class AnalyticsListener : MonoBehaviour
         fryingEvent.RegisterListener(fryingListener);
         fridgeEvent.RegisterListener(fridgeListener);
         cheeseEvent.RegisterListener(cheeseListener);
+        preppingEvent.RegisterListener(preppingListener);
+        platingEvent.RegisterListener(platingListener);
     }
 
     private void OnDisable()
@@ -51,6 +59,8 @@ public class AnalyticsListener : MonoBehaviour
         fryingEvent.UnregisterListener(fryingListener);
         fridgeEvent.UnregisterListener(fridgeListener);
         cheeseEvent.UnregisterListener(cheeseListener);
+        preppingEvent.UnregisterListener(preppingListener);
+        platingEvent.UnregisterListener(platingListener);
     }
 
     //Function for storing data when using chopping board
@@ -129,5 +139,31 @@ public class AnalyticsListener : MonoBehaviour
             data.isCorrect.ToString()
         };
         FileManager.SaveEvent("Cheese Event:", allData);
+    }
+
+    //Function for storing data when prepping
+    private void OnPreppingUsed(PreppingEventData data)
+    {
+        //Storing data in analytic event
+
+        //Storing data in JSON
+        List<string> allData = new List<string>
+        {
+            data.isCorrect.ToString()
+        };
+        FileManager.SaveEvent("Prepping Event:", allData);
+    }
+
+    //Function for storing data when plating
+    private void OnPlatingUsed(PlatingEventData data)
+    {
+        //Storing data in analytic event
+
+        //Storing data in JSON
+        List<string> allData = new List<string>
+        {
+            data.isCorrect.ToString()
+        };
+        FileManager.SaveEvent("Plating Event:", allData);
     }
 }
