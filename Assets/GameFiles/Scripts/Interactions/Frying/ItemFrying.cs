@@ -37,6 +37,7 @@ public class ItemFrying : MonoBehaviour
 
                     transform.parent = burger.transform;
                     transform.position = burger.transform.position + new Vector3(0, 0.02f, 0);
+                    transform.GetComponent<BoxCollider>().enabled = false;
 
                     //Analytic storage
                     StoreCheeseInfo(true);

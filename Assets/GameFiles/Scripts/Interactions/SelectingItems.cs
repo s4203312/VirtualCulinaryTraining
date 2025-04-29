@@ -9,7 +9,7 @@ public class SelectingItems : MonoBehaviour
 {
     public GameManager gameManager;
     public SlicingManager slicingManager;
-    public PrepManager prepManager;
+    public PlatingManager platingManager;
     public SaucesManager saucesManager;
     public FryingManager fryingManager;
     
@@ -20,6 +20,7 @@ public class SelectingItems : MonoBehaviour
 
     private float zPosition;
     private Vector3 offset;
+    private int i;
 
     //Analytic collection
     public FryingEvent fryingEvent;
@@ -59,17 +60,22 @@ public class SelectingItems : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.CompareTag("PickUpFood"))      //Unable to move food just select it
+                switch (hit.transform.tag)
                 {
-                    PickUpFood(hit);
-                }
-                else if (hit.collider.CompareTag("PickUpUtensil"))      //Able to move utensils
-                {
-                    PickUpUtensil(hit);
-                }
-                else if (hit.collider.CompareTag("Fryable"))            //Selecting burgers and bacon
-                {
-                    PickUpFryable(hit);
+                    case "PickUpFood":      //Unable to move food just select it
+                        PickUpFood(hit);
+                        break;
+                    case "PickUpUtensil":       //Able to move utensils
+                        PickUpUtensil(hit);
+                        break;
+                    case "Fryable":             //Selecting burgers and bacon
+                        PickUpFryable(hit);
+                        break;
+                    case "Plating":             //Finally plating
+                        PickUpPlating(hit);
+                        break;
+                    default:                    //Hitting nothing of importance
+                        break;
                 }
             }
         }
@@ -106,8 +112,10 @@ public class SelectingItems : MonoBehaviour
         }
         else                //All other items to prep station
         {
-            prepManager.preppedIngredients.Add(preppedItem);
-            preppedItem.SetActive(false);
+            platingManager.preppedIngredients.Add(preppedItem);
+            preppedItem.transform.position = platingManager.prepSection.transform.GetChild(i).GetChild(0).position;
+            preppedItem.tag = "Untagged";
+            i++;
         }
         yield return null;
     } 
@@ -161,7 +169,7 @@ public class SelectingItems : MonoBehaviour
             string itemName = hit.transform.GetComponent<ItemFrying>().itemName;            //Taking fry item out
             if (itemName == "Burger")
             {
-                if (!hit.transform.GetChild(2))
+                if (hit.transform.childCount > 1)       //Is cheese on burger?
                 {
                     //Analytic storage
                     StoreCheeseInfo(false);
@@ -174,9 +182,14 @@ public class SelectingItems : MonoBehaviour
             hit.transform.GetComponent<ItemFrying>().timeInPan = 0;
             hit.transform.GetComponent<ItemFrying>().enabled = false;
             fryingManager.MoveItemToPrep(itemName, hit.transform.gameObject);
+            platingManager.preppedIngredients.Add(hit.transform.gameObject);
+            hit.transform.tag = "Untagged";
         }
     }
-
+    private void PickUpPlating(RaycastHit hit)
+    {
+        platingManager.PlateItem(hit.transform.gameObject);
+    }
 
     //Storing analytics information
     public void StoreFryingInfo(float time, string itemName)
