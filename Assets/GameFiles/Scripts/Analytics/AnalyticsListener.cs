@@ -89,6 +89,13 @@ public class AnalyticsListener : MonoBehaviour
     private void OnSpoonUsed(SaucesEventData data)
     {
         //Storing data in analytic event
+        var UASauces = new UnityAnalyticSauces
+        {
+            amount = data.amount,
+            sauceName = data.sauceName,
+            isCorrect = data.isCorrect
+        };
+        AnalyticsService.Instance.RecordEvent(UASauces);    //Recording the information
 
         //Storing data in JSON
         List<string> allData = new List<string>
@@ -104,6 +111,13 @@ public class AnalyticsListener : MonoBehaviour
     private void OnFryerUsed(FryingEventData data)
     {
         //Storing data in analytic event
+        var UAFryer = new UnityAnalyticFryer
+        {
+            cookingTime = data.cookingTime,
+            itemName = data.itemName,
+            isCorrect = data.isCorrect
+        };
+        AnalyticsService.Instance.RecordEvent(UAFryer);    //Recording the information
 
         //Storing data in JSON
         List<string> allData = new List<string>
@@ -119,6 +133,11 @@ public class AnalyticsListener : MonoBehaviour
     private void OnFridgeUsed(FridgeEventData data)
     {
         //Storing data in analytic event
+        var UAFridge = new UnityAnalyticFridge
+        {
+            isCorrect = data.isCorrect
+        };
+        AnalyticsService.Instance.RecordEvent(UAFridge);    //Recording the information
 
         //Storing data in JSON
         List<string> allData = new List<string>
@@ -132,6 +151,11 @@ public class AnalyticsListener : MonoBehaviour
     private void OnCheeseUsed(CheeseEventData data)
     {
         //Storing data in analytic event
+        var UACheese = new UnityAnalyticCheese
+        {
+            isCorrect = data.isCorrect
+        };
+        AnalyticsService.Instance.RecordEvent(UACheese);    //Recording the information
 
         //Storing data in JSON
         List<string> allData = new List<string>
@@ -145,6 +169,11 @@ public class AnalyticsListener : MonoBehaviour
     private void OnPreppingUsed(PreppingEventData data)
     {
         //Storing data in analytic event
+        var UAPrepping = new UnityAnalyticPrepping
+        {
+            isCorrect = data.isCorrect
+        };
+        AnalyticsService.Instance.RecordEvent(UAPrepping);    //Recording the information
 
         //Storing data in JSON
         List<string> allData = new List<string>
@@ -158,6 +187,11 @@ public class AnalyticsListener : MonoBehaviour
     private void OnPlatingUsed(PlatingEventData data)
     {
         //Storing data in analytic event
+        var UAPlating = new UnityAnalyticPlating
+        {
+            isCorrect = data.isCorrect
+        };
+        AnalyticsService.Instance.RecordEvent(UAPlating);    //Recording the information
 
         //Storing data in JSON
         List<string> allData = new List<string>

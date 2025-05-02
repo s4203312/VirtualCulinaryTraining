@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class UnityAnalyticChopping : Unity.Services.Analytics.Event
 {
     //Creating the event and linking it to game services
