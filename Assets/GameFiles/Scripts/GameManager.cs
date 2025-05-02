@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject recipe;
     private string filePath;
+    public float overallTimeTaken;
 
     public GameObject spaceInFridge;
     public GameObject itemInFridge;
@@ -26,6 +27,9 @@ public class GameManager : MonoBehaviour
         filePath = Path.Combine(Application.persistentDataPath, usersName + "Analytics.json");
         FileManager.filePath = filePath;
         File.WriteAllText(filePath, "{}");
+
+        //Reseting time taken
+        overallTimeTaken = 0;
     }
 
     public void FindAllCameras()
@@ -55,9 +59,11 @@ public class GameManager : MonoBehaviour
         {
             recipe.SetActive(true);
         }
-        if (Input.GetKey(KeyCode.T) == true)
+        if (Input.GetKey(KeyCode.B) == true)
         {
             recipe.SetActive(false);
         }
+
+        overallTimeTaken += Time.deltaTime;
     }
 }

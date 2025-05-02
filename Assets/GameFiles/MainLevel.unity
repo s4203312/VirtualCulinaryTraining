@@ -4084,7 +4084,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27bbfe882810cac418595959b3d1d886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 1188477550}
   userNameInput: {fileID: 0}
+  timeTakenEvent: {fileID: 11400000, guid: fd3e907fd4bb0854ba8626260468c952, type: 2}
 --- !u!1 &921479688
 GameObject:
   m_ObjectHideFlags: 0
@@ -6151,6 +6153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameCanvases: {fileID: 1436089706}
   recipe: {fileID: 897463100}
+  overallTimeTaken: 0
   spaceInFridge: {fileID: 891665599}
   itemInFridge: {fileID: 0}
   isInFridge: 0
@@ -10935,6 +10938,7 @@ MonoBehaviour:
   cheeseEvent: {fileID: 11400000, guid: a8c34efad3bc3654fa18f8637b4e0b6c, type: 2}
   preppingEvent: {fileID: 11400000, guid: f6e6544eb64a7184ebba8e82590e4e84, type: 2}
   platingEvent: {fileID: 11400000, guid: 9337242c2788ead44ba74ed047f72842, type: 2}
+  timeTakenEvent: {fileID: 11400000, guid: fd3e907fd4bb0854ba8626260468c952, type: 2}
 --- !u!1 &1856749158
 GameObject:
   m_ObjectHideFlags: 0

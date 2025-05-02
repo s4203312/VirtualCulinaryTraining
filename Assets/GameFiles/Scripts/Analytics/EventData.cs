@@ -39,3 +39,8 @@ public struct PlatingEventData   //Data being stored for correctly plating the b
 {
     public bool isCorrect;
 }
+
+public struct TimeTakenEventData   //Data being stored for time taken to complete game
+{
+    public float timeTaken;
+}

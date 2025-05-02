@@ -169,7 +169,7 @@ public class SelectingItems : MonoBehaviour
             string itemName = hit.transform.GetComponent<ItemFrying>().itemName;            //Taking fry item out
             if (itemName == "Burger")
             {
-                if (hit.transform.childCount > 1)       //Is cheese on burger?
+                if (hit.transform.childCount <= 1)       //Is cheese on burger?
                 {
                     //Analytic storage
                     StoreCheeseInfo(false);

@@ -66,6 +66,9 @@ public class Feedback : MonoBehaviour
                     case "Plating Event:":
                         PlatingData(anaEvent, i);
                         break;
+                    case "Time Taken Event:":
+                        TimeTakenData(anaEvent, i);
+                        break;
                     default:
                         finalFeedback = "\n You completed the training perfectly with no errors well done"; 
                         break;
@@ -156,5 +159,10 @@ public class Feedback : MonoBehaviour
         {
             finalFeedback = finalFeedback + "\n" + "You incorrectly plated the burger";
         }
+    }
+    public void TimeTakenData(AnalyticsEvent anaEvent, int pos)
+    {
+        string timeTaken = anaEvent.eventData[pos];
+        finalFeedback = finalFeedback + "\n" + "You took " + timeTaken + " seconds to complete the training";
     }
 }

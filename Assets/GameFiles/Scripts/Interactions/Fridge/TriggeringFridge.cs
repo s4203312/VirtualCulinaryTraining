@@ -12,7 +12,7 @@ public class TriggeringFridge : MonoBehaviour
 
     public GameObject fridge;
     public bool currentlyMoving;
-    private bool fridgeOpen = false;
+    private bool fridgeEveFired = false;
     private float fridgeOpenTime;
 
     public Transform burgerPosByPan;
@@ -22,7 +22,6 @@ public class TriggeringFridge : MonoBehaviour
         if (other.gameObject.tag == "Player" && Input.GetKey(KeyCode.E) == true && !currentlyMoving)
         {
             currentlyMoving = true;
-            fridgeOpen = fridge.GetComponent<OpenFridge>().isOpen;
             fridge.GetComponent<OpenFridge>().OpenDoor();
         }
 
@@ -39,12 +38,12 @@ public class TriggeringFridge : MonoBehaviour
 
     private void Update()
     {
-        if (fridgeOpen)
+        if (fridge.GetComponent<OpenFridge>().isOpen && !fridgeEveFired)
         {
             fridgeOpenTime += Time.deltaTime;        //Count how long the fridge has been open
             if (fridgeOpenTime > 20f)
             {
-                fridgeOpen = false;
+                fridgeEveFired = true;
                 fridgeEvent.Raise(new FridgeEventData { isCorrect = false });
             }
         }

@@ -6,8 +6,12 @@ using TMPro;
 
 public class Menu : MonoBehaviour
 {
+    public GameManager gameManager;
     public TMP_InputField userNameInput;
     private string usersName;
+
+    //Analytic collection
+    public TimeTakenEvent timeTakenEvent;
 
     //Changing the scene to start the game
     public void StartGame()
@@ -25,6 +29,7 @@ public class Menu : MonoBehaviour
 
     public void LoadFeedback()
     {
+        timeTakenEvent.Raise(new TimeTakenEventData { timeTaken = gameManager.overallTimeTaken });
         SceneManager.LoadScene(2);
     }
     public void RetryTraining()

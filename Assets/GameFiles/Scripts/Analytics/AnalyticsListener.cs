@@ -14,6 +14,7 @@ public class AnalyticsListener : MonoBehaviour
     public CheeseEvent cheeseEvent;
     public PreppingEvent preppingEvent;
     public PlatingEvent platingEvent;
+    public TimeTakenEvent timeTakenEvent;
 
     //Event listeners
     private GameEventListener<ChoppingEventData> choppingListener;
@@ -23,6 +24,7 @@ public class AnalyticsListener : MonoBehaviour
     private GameEventListener<CheeseEventData> cheeseListener;
     private GameEventListener<PlatingEventData> platingListener;
     private GameEventListener<PreppingEventData> preppingListener;
+    private GameEventListener<TimeTakenEventData> timeTakenListener;
 
     private async void Awake()
     {
@@ -40,6 +42,7 @@ public class AnalyticsListener : MonoBehaviour
         cheeseListener = new InlineListener<CheeseEventData>(OnCheeseUsed);
         preppingListener = new InlineListener<PreppingEventData>(OnPreppingUsed);
         platingListener = new InlineListener<PlatingEventData>(OnPlatingUsed);
+        timeTakenListener = new InlineListener<TimeTakenEventData>(OnTimeTaken);
 
         //Registering listener to event
         choppingEvent.RegisterListener(choppingListener);
@@ -49,6 +52,7 @@ public class AnalyticsListener : MonoBehaviour
         cheeseEvent.RegisterListener(cheeseListener);
         preppingEvent.RegisterListener(preppingListener);
         platingEvent.RegisterListener(platingListener);
+        timeTakenEvent.RegisterListener(timeTakenListener);
     }
 
     private void OnDisable()
@@ -61,6 +65,7 @@ public class AnalyticsListener : MonoBehaviour
         cheeseEvent.UnregisterListener(cheeseListener);
         preppingEvent.UnregisterListener(preppingListener);
         platingEvent.UnregisterListener(platingListener);
+        timeTakenEvent.UnregisterListener(timeTakenListener);
     }
 
     //Function for storing data when using chopping board
@@ -199,5 +204,23 @@ public class AnalyticsListener : MonoBehaviour
             data.isCorrect.ToString()
         };
         FileManager.SaveEvent("Plating Event:", allData);
+    }
+
+    //Function for storing time taken to complete game
+    private void OnTimeTaken(TimeTakenEventData data)
+    {
+        //Storing data in analytic event
+        var UATimeTaken = new UnityAnalyticTimeTaken
+        {
+            timeTaken = data.timeTaken
+        };
+        AnalyticsService.Instance.RecordEvent(UATimeTaken);    //Recording the information
+
+        //Storing data in JSON
+        List<string> allData = new List<string>
+        {
+            data.timeTaken.ToString()
+        };
+        FileManager.SaveEvent("Time Taken Event:", allData);
     }
 }
