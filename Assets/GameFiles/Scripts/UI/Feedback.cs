@@ -4,79 +4,116 @@ using UnityEditor;
 using UnityEngine;
 using TMPro;
 using System.Globalization;
+using UnityEngine.SocialPlatforms;
 
 public class Feedback : MonoBehaviour
 {
     private string filePath;
 
     private string finalFeedback;
-    public TMP_Text feedbackBox;
+    public TMP_Text firstFeedbackBox;
+    public TMP_Text secondFeedbackBox;
 
     private string incorrectName;
     private string incorrectValue;
 
+    //Review variables
+    public bool isPathFound;
+    public TMP_InputField userNameInput;
+
     public void Start()
     {
-        filePath = FileManager.filePath;
-        AnalyticsWrapper savedInfo = LoadFile();
-        CreateFeedback(savedInfo);
-        ProvideFeedback();
+        if (isPathFound)
+        {
+            filePath = FileManager.filePath;
+            AnalyticsWrapper savedInfo = LoadFile();
+            CreateFeedback(savedInfo);
+        }
     }
 
-    private AnalyticsWrapper LoadFile()
+    public void ReviewStart()
+    {
+        if (userNameInput.text != "")
+        {
+            filePath = Path.Combine(Application.persistentDataPath, userNameInput.text.Trim() + "Analytics.json");
+            AnalyticsWrapper savedInfo = LoadFile();
+            CreateFeedback(savedInfo);
+        }
+    }
+
+    public AnalyticsWrapper LoadFile()
     {
         string json = File.ReadAllText(filePath);
         return JsonUtility.FromJson<AnalyticsWrapper>(json);        //Deserialising the list so unity can read it again
     }
 
-    private void ProvideFeedback()
+    private void ProvideFeedback(bool isFirst)
     {
-        //Try doing some resizing stuff here to ensure text fits
-        feedbackBox.text = finalFeedback;
+        if (isFirst)
+        {
+            firstFeedbackBox.text = finalFeedback;
+        }
+        else
+        {
+            secondFeedbackBox.text = finalFeedback;
+        }
     }
 
-    private void CreateFeedback(AnalyticsWrapper savedInfo)
+    public void CreateFeedback(AnalyticsWrapper savedInfo)
     {
-        finalFeedback = "Feedback From Training:";
-
-        foreach (var anaEvent in savedInfo.events)
+        foreach (var anaEvent in savedInfo.FirstTryEvents)
         {
-            for (int i = 0; i < anaEvent.eventData.Count; i++)
+            finalFeedback = "First Attempt: ";
+            EventSwitch(anaEvent);
+            ProvideFeedback(true);
+        }
+        foreach (var anaEvent in savedInfo.SecondTryEvents)
+        {
+            finalFeedback = "Second Attempt: ";
+            EventSwitch(anaEvent);
+            ProvideFeedback(false);
+        }
+    }
+
+    //Switch statments for retrieving events
+    private void EventSwitch(AnalyticsEvent anaEvent)
+    {
+        for (int i = 0; i < anaEvent.eventData.Count; i++)
+        {
+            switch (anaEvent.eventName)
             {
-                switch (anaEvent.eventName)
-                {
-                    case "Chopping Board Event:":
-                        ChoppingData(anaEvent, i);
-                        break;
-                    case "Sauces Event:":
-                        SaucesData(anaEvent, i);
-                        break;
-                    case "Frying Event:":
-                        FryingData(anaEvent, i);
-                        break;
-                    case "Fridge Event:":
-                        FridgeData(anaEvent, i);
-                        break;
-                    case "Cheese Event:":
-                        CheeseData(anaEvent, i);
-                        break;
-                    case "Prepping Event:":
-                        PreppingData(anaEvent, i);
-                        break;
-                    case "Plating Event:":
-                        PlatingData(anaEvent, i);
-                        break;
-                    case "Time Taken Event:":
-                        TimeTakenData(anaEvent, i);
-                        break;
-                    default:
-                        finalFeedback = "\n You completed the training perfectly with no errors well done"; 
-                        break;
-                }
+                case "Chopping Board Event:":
+                    ChoppingData(anaEvent, i);
+                    break;
+                case "Sauces Event:":
+                    SaucesData(anaEvent, i);
+                    break;
+                case "Frying Event:":
+                    FryingData(anaEvent, i);
+                    break;
+                case "Fridge Event:":
+                    FridgeData(anaEvent, i);
+                    break;
+                case "Cheese Event:":
+                    CheeseData(anaEvent, i);
+                    break;
+                case "Prepping Event:":
+                    PreppingData(anaEvent, i);
+                    break;
+                case "Plating Event:":
+                    PlatingData(anaEvent, i);
+                    break;
+                case "Time Taken Event:":
+                    TimeTakenData(anaEvent, i);
+                    break;
+                default:
+                    finalFeedback = "\n You completed the training perfectly with no errors well done";
+                    break;
             }
         }
     }
 
+    //Retrieving data from events
     public void ChoppingData(AnalyticsEvent anaEvent, int pos)
     {
         if (anaEvent.eventData[pos] == "False")

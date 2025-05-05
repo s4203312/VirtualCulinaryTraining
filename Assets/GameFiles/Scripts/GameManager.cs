@@ -22,12 +22,6 @@ public class GameManager : MonoBehaviour
         FindAllCameras();
         SetUpPlayer();
 
-        //File path that works with any machine not just a local path and individual to user
-        string usersName = PlayerPrefs.GetString("UsersName");
-        filePath = Path.Combine(Application.persistentDataPath, usersName + "Analytics.json");
-        FileManager.filePath = filePath;
-        File.WriteAllText(filePath, "{}");
-
         //Reseting time taken
         overallTimeTaken = 0;
     }

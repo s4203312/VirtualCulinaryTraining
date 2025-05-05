@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
 
 public class FileManager
 {
@@ -16,21 +14,43 @@ public class FileManager
         AnalyticsWrapper wrapper = LoadFile();      //Finding the current data file
         foundEvent = false;
 
-        foreach (var anaEvent in wrapper.events)    //Checking if we have an event log already in the file
+        if (PlayerPrefs.GetInt("FirstAttempt") == 1)        //First attempt
         {
-            if (anaEvent.eventName == eventName)
+            foreach (var anaEvent in wrapper.FirstTryEvents)    //Checking if we have an event log already in the file
             {
-                anaEvent.eventData.AddRange(eventData);          //Adding the new event data to the dictionary
-                foundEvent = true;
+                if (anaEvent.eventName == eventName)
+                {
+                    anaEvent.eventData.AddRange(eventData);          //Adding the new event data to the dictionary
+                    foundEvent = true;
+                }
+            }
+            if (!foundEvent)                        //If event cant be found create a new list
+            {
+                wrapper.FirstTryEvents.Add(new AnalyticsEvent
+                {
+                    eventName = eventName,
+                    eventData = new List<string>(eventData)
+                });
             }
         }
-        if (!foundEvent)                        //If event cant be found create a new list
+        else                            //Second attempt
         {
-            wrapper.events.Add(new AnalyticsEvent
+            foreach (var anaEvent in wrapper.SecondTryEvents)    //Checking if we have an event log already in the file
             {
-                eventName = eventName,
-                eventData = new List<string>(eventData)
-            });
+                if (anaEvent.eventName == eventName)
+                {
+                    anaEvent.eventData.AddRange(eventData);          //Adding the new event data to the dictionary
+                    foundEvent = true;
+                }
+            }
+            if (!foundEvent)                        //If event cant be found create a new list
+            {
+                wrapper.SecondTryEvents.Add(new AnalyticsEvent
+                {
+                    eventName = eventName,
+                    eventData = new List<string>(eventData)
+                });
+            }
         }
 
         string json = JsonUtility.ToJson(wrapper, true);        //Converting to JSON using the serialised the list
@@ -47,7 +67,7 @@ public class FileManager
         }
         else
         {
-            return new AnalyticsWrapper { events = new List<AnalyticsEvent>() };        //Creating a new section if the events section cant be found
+            return new AnalyticsWrapper { FirstTryEvents = new List<AnalyticsEvent>() };        //Creating a new section if the events section cant be found
         }
     }
 }
@@ -56,7 +76,8 @@ public class FileManager
 [System.Serializable]       
 public class AnalyticsWrapper   //Serialising the list so it can be converted to JSON
 { 
-    public List<AnalyticsEvent> events = new List<AnalyticsEvent>(); 
+    public List<AnalyticsEvent> FirstTryEvents = new List<AnalyticsEvent>(); 
+    public List<AnalyticsEvent> SecondTryEvents = new List<AnalyticsEvent>(); 
 }
 
 [System.Serializable]

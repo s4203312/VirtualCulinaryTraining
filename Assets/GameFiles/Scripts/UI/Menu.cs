@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -21,7 +20,13 @@ public class Menu : MonoBehaviour
         {
             //Store in playerprefs for use later
             PlayerPrefs.SetString("UsersName", usersName);
+            PlayerPrefs.SetInt("FirstAttempt", 1);
             PlayerPrefs.Save();
+
+            //File path that works with any machine not just a local path and individual to user
+            FileManager.filePath = Path.Combine(Application.persistentDataPath, usersName + "Analytics.json");
+            string filePath = FileManager.filePath;
+            File.WriteAllText(filePath, "{}");                      //Clearing file
 
             SceneManager.LoadScene(1);
         }
@@ -34,6 +39,7 @@ public class Menu : MonoBehaviour
     }
     public void RetryTraining()
     {
+        PlayerPrefs.SetInt("FirstAttempt", 0);
         SceneManager.LoadScene(1);
     }
     public void BackToMenu()
