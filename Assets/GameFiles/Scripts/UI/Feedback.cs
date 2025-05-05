@@ -47,32 +47,21 @@ public class Feedback : MonoBehaviour
         return JsonUtility.FromJson<AnalyticsWrapper>(json);        //Deserialising the list so unity can read it again
     }
 
-    private void ProvideFeedback(bool isFirst)
-    {
-        if (isFirst)
-        {
-            firstFeedbackBox.text = finalFeedback;
-        }
-        else
-        {
-            secondFeedbackBox.text = finalFeedback;
-        }
-    }
-
     public void CreateFeedback(AnalyticsWrapper savedInfo)
     {
+        finalFeedback = "First Attempt: ";
         foreach (var anaEvent in savedInfo.FirstTryEvents)
         {
-            finalFeedback = "First Attempt: ";
             EventSwitch(anaEvent);
-            ProvideFeedback(true);
         }
+        firstFeedbackBox.text = finalFeedback;
+
+        finalFeedback = "Second Attempt: ";
         foreach (var anaEvent in savedInfo.SecondTryEvents)
         {
-            finalFeedback = "Second Attempt: ";
             EventSwitch(anaEvent);
-            ProvideFeedback(false);
         }
+        secondFeedbackBox.text = finalFeedback;
     }
 
     //Switch statments for retrieving events
@@ -110,6 +99,7 @@ public class Feedback : MonoBehaviour
                     finalFeedback = "\n You completed the training perfectly with no errors well done";
                     break;
             }
+            Debug.Log(finalFeedback);
         }
     }
 
