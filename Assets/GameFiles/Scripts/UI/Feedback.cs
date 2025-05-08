@@ -5,14 +5,17 @@ using UnityEngine;
 using TMPro;
 using System.Globalization;
 using UnityEngine.SocialPlatforms;
+using System;
 
 public class Feedback : MonoBehaviour
 {
     private string filePath;
 
-    private string finalFeedback;
-    public TMP_Text firstFeedbackBox;
-    public TMP_Text secondFeedbackBox;
+    public GameObject firstTable;
+    public GameObject secondTable;
+    public GameObject currentTable;
+
+    private bool hasHitFalse;
 
     private string incorrectName;
     private string incorrectValue;
@@ -49,19 +52,22 @@ public class Feedback : MonoBehaviour
 
     public void CreateFeedback(AnalyticsWrapper savedInfo)
     {
-        finalFeedback = "First Attempt: ";
+        currentTable = firstTable;
+        currentTable.SetActive(true);
         foreach (var anaEvent in savedInfo.FirstTryEvents)
         {
             EventSwitch(anaEvent);
         }
-        firstFeedbackBox.text = finalFeedback;
 
-        finalFeedback = "Second Attempt: ";
-        foreach (var anaEvent in savedInfo.SecondTryEvents)
+        if(savedInfo.SecondTryEvents.Count > 0)
         {
-            EventSwitch(anaEvent);
+            currentTable = secondTable;
+            currentTable.SetActive(true);
+            foreach (var anaEvent in savedInfo.SecondTryEvents)
+            {
+                EventSwitch(anaEvent);
+            }
         }
-        secondFeedbackBox.text = finalFeedback;
     }
 
     //Switch statments for retrieving events
@@ -69,6 +75,7 @@ public class Feedback : MonoBehaviour
     {
         for (int i = 0; i < anaEvent.eventData.Count; i++)
         {
+            hasHitFalse = false;
             switch (anaEvent.eventName)
             {
                 case "Chopping Board Event:":
@@ -96,18 +103,31 @@ public class Feedback : MonoBehaviour
                     TimeTakenData(anaEvent, i);
                     break;
                 default:
-                    finalFeedback = "\n You completed the training perfectly with no errors well done";
                     break;
             }
-            Debug.Log(finalFeedback);
+
+            if (hasHitFalse)
+            {
+                return;
+            }
         }
     }
 
     //Retrieving data from events
     public void ChoppingData(AnalyticsEvent anaEvent, int pos)
     {
-        if (anaEvent.eventData[pos] == "False")
+        if (anaEvent.eventData[pos] == "True")
         {
+            currentTable.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+            currentTable.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+        }
+        else if (anaEvent.eventData[pos] == "False")
+        {
+            hasHitFalse = true;
+            currentTable.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+            currentTable.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+
+
             //Retrieving the incorrect data
             incorrectName = anaEvent.eventData[pos - 1].ToString();
             incorrectValue = anaEvent.eventData[pos - 2].ToString();
@@ -121,15 +141,23 @@ public class Feedback : MonoBehaviour
             {
                 correctBoard = "Green";
             }
-
-            finalFeedback = finalFeedback + "\n" + "You incorrectly chopped a " + incorrectName + " using a " + incorrectValue
-                            + " chopping board. Next time use a " + correctBoard + " chopping board for the " + incorrectName;
+            //finalFeedback = finalFeedback + "\n" + "You incorrectly chopped a " + incorrectName + " using a " + incorrectValue
+            //+ " chopping board. Next time use a " + correctBoard + " chopping board for the " + incorrectName;
         }
     }
     public void SaucesData(AnalyticsEvent anaEvent, int pos)
     {
-        if (anaEvent.eventData[pos] == "False")
+        if (anaEvent.eventData[pos] == "True")
         {
+            currentTable.transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+            currentTable.transform.GetChild(1).GetChild(1).gameObject.SetActive(true);
+        }
+        else if (anaEvent.eventData[pos] == "False")
+        {
+            hasHitFalse = true;
+            currentTable.transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+            currentTable.transform.GetChild(1).GetChild(1).gameObject.SetActive(false);
+
             //Retrieving the incorrect data
             incorrectName = anaEvent.eventData[pos - 1].ToString();
             incorrectValue = anaEvent.eventData[pos - 2].ToString();
@@ -139,8 +167,17 @@ public class Feedback : MonoBehaviour
     }
     public void FryingData(AnalyticsEvent anaEvent, int pos)
     {
-        if (anaEvent.eventData[pos] == "False")
+        if (anaEvent.eventData[pos] == "True")
         {
+            currentTable.transform.GetChild(2).GetChild(0).gameObject.SetActive(false);
+            currentTable.transform.GetChild(2).GetChild(1).gameObject.SetActive(true);
+        }
+        else if (anaEvent.eventData[pos] == "False")
+        {
+            hasHitFalse = true;
+            currentTable.transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
+            currentTable.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
+
             //Retrieving the incorrect data
             incorrectName = anaEvent.eventData[pos - 1].ToString();
             incorrectValue = anaEvent.eventData[pos - 2].ToString();
@@ -155,41 +192,62 @@ public class Feedback : MonoBehaviour
                 cookedLevel = "under cooked";
             }
 
-            finalFeedback = finalFeedback + "\n" + "You incorrectly cooked the " + incorrectName + " You cooked the " + incorrectName
-                            + " for " + incorrectValue + " seconds this resulted in a " + cookedLevel + " " + incorrectName;
+            //finalFeedback = finalFeedback + "\n" + "You incorrectly cooked the " + incorrectName + " You cooked the " + incorrectName
+            //+ " for " + incorrectValue + " seconds this resulted in a " + cookedLevel + " " + incorrectName;
         }
     }
     public void CheeseData(AnalyticsEvent anaEvent, int pos)
     {
-        if (anaEvent.eventData[pos] == "False")
+        if (anaEvent.eventData[pos] == "True")
         {
-            finalFeedback = finalFeedback + "\n" + "You forgot to add the cheese to the burger";
+            //finalFeedback = finalFeedback + "\n" + "You forgot to add the cheese to the burger";
+
+            currentTable.transform.GetChild(3).GetChild(0).gameObject.SetActive(false);
+            currentTable.transform.GetChild(3).GetChild(1).gameObject.SetActive(true);
         }
     }
     public void FridgeData(AnalyticsEvent anaEvent, int pos)
     {
-        if (anaEvent.eventData[pos] == "False")
+        if (anaEvent.eventData[pos] == "True")
         {
-            finalFeedback = finalFeedback + "\n" + "You forgot to close the fridge after taking the burgers out"; 
+            //finalFeedback = finalFeedback + "\n" + "You forgot to close the fridge after taking the burgers out"; 
+
+            currentTable.transform.GetChild(4).GetChild(0).gameObject.SetActive(false);
+            currentTable.transform.GetChild(4).GetChild(1).gameObject.SetActive(true);
+        }
+        else if (anaEvent.eventData[pos] == "False")
+        {
+            hasHitFalse = true;
+            currentTable.transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
+            currentTable.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
         }
     }
     public void PreppingData(AnalyticsEvent anaEvent, int pos)
     {
-        if (anaEvent.eventData[pos] == "False")
+        if (anaEvent.eventData[pos] == "True")
         {
-            finalFeedback = finalFeedback + "\n" + "You forgot to prep items that are required in the recipe";
+            //finalFeedback = finalFeedback + "\n" + "You forgot to prep items that are required in the recipe";
+
+            currentTable.transform.GetChild(5).GetChild(0).gameObject.SetActive(false);
+            currentTable.transform.GetChild(5).GetChild(1).gameObject.SetActive(true);
         }
     }
     public void PlatingData(AnalyticsEvent anaEvent, int pos)
     {
-        if (anaEvent.eventData[pos] == "False")
+        if (anaEvent.eventData[pos] == "True")
         {
-            finalFeedback = finalFeedback + "\n" + "You incorrectly plated the burger";
+            //finalFeedback = finalFeedback + "\n" + "You incorrectly plated the burger";
+
+            currentTable.transform.GetChild(6).GetChild(0).gameObject.SetActive(false);
+            currentTable.transform.GetChild(6).GetChild(1).gameObject.SetActive(true);
         }
     }
     public void TimeTakenData(AnalyticsEvent anaEvent, int pos)
     {
         string timeTaken = anaEvent.eventData[pos];
-        finalFeedback = finalFeedback + "\n" + "You took " + timeTaken + " seconds to complete the training";
+        int mins = TimeSpan.FromSeconds(Double.Parse(timeTaken)).Minutes;
+        int secs = TimeSpan.FromSeconds(Double.Parse(timeTaken)).Seconds;
+        currentTable.transform.GetChild(7).GetChild(0).GetComponent<TMP_Text>().text = mins.ToString() + ":" + secs.ToString();
+        //finalFeedback = finalFeedback + "\n" + "You took " + timeTaken + " seconds to complete the training";
     }
 }

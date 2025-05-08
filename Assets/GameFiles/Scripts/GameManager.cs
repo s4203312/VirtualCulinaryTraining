@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         {
             recipe.SetActive(true);
         }
-        if (Input.GetKey(KeyCode.B) == true)
+        if (Input.GetKey(KeyCode.T) == true)
         {
             recipe.SetActive(false);
         }

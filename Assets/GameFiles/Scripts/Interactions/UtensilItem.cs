@@ -84,7 +84,7 @@ public class UtensilItem : MonoBehaviour
                     }
                     else if(transform.name == "TSP")
                     {
-                        sauceSelected.GetComponent<SauceObjectStorage>().amountOfSauce = 5;
+                        sauceSelected.GetComponent<SauceObjectStorage>().amountOfSauce = 10;
                     }
                     sauceInSpoon = true;
                 }
@@ -135,23 +135,28 @@ public class UtensilItem : MonoBehaviour
 
     public void StoreSauceInfo(string amount, string sauceName)
     {
-        //bool correctAmount = false;
-        //Checking if correct board was used
-        //if (sauceName == "MinceBeef" && amount == "Red")
-        //{
-        //    correctBoard = true;
-        //}
-        //else if (itemName != "MinceBeef" && boardColor == "Green")
-        //{
-        //    correctBoard = true;
-        //}
+        bool correctAmount = false;
+        if (sauceName == "Mayo" || sauceName == "Lettuce(Clone)")
+        {
+            if(amount == "15")
+            {
+                correctAmount = true;
+            }
+        }
+        else if (sauceName == "Tabasco" || sauceName == "Worcestershire" || sauceName == "Ketchup")
+        {
+            if (amount == "10")
+            {
+                correctAmount = true;
+            }
+        }
 
         //Raising the event to be called and analytics to be stored
         saucesEvent.Raise(new SaucesEventData
         {
             amount = amount,
             sauceName = sauceName,
-            isCorrect = true        //Need work
+            isCorrect = correctAmount
         });
     }
 }

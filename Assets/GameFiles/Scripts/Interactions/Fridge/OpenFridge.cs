@@ -9,6 +9,9 @@ public class OpenFridge : MonoBehaviour
 
     public GameObject fridgeCanvas;
 
+    //Analytic collection
+    public FridgeEvent fridgeEvent;
+
     public void OpenDoor()
     {
         GameObject pivotPoint = transform.GetChild(0).gameObject;
@@ -18,6 +21,7 @@ public class OpenFridge : MonoBehaviour
         {
             isOpen = false;
             fridgeCanvas.SetActive(false);          //Removing canvas
+            fridgeEvent.Raise(new FridgeEventData { isCorrect = true });
         }
         else
         {
