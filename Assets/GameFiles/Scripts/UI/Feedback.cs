@@ -2,6 +2,7 @@ using System.IO;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Globalization;
 
 public class Feedback : MonoBehaviour
 {
@@ -195,4 +196,37 @@ public class Feedback : MonoBehaviour
         int secs = TimeSpan.FromSeconds(Double.Parse(timeTaken)).Seconds;
         currentTable.transform.GetChild(7).GetChild(0).GetComponent<TMP_Text>().text = mins.ToString() + ":" + secs.ToString();
     }
+
+    ////Retrieving the incorrect data
+    //incorrectName = anaEvent.eventData[pos - 1].ToString();
+    //incorrectValue = anaEvent.eventData[pos - 2].ToString();
+
+    //string correctBoard;
+    //if (incorrectName == "MinceBeef")
+    //{
+    //    correctBoard = "Red";
+    //}
+    //else
+    //{
+    //    correctBoard = "Green";
+    //}
+    //finalFeedback = finalFeedback + "\n" + "You incorrectly chopped a " + incorrectName + " using a " + incorrectValue
+    //+ " chopping board. Next time use a " + correctBoard + " chopping board for the " + incorrectName;
+
+    //Retrieving the incorrect data
+    //incorrectName = anaEvent.eventData[pos - 1].ToString();
+    //incorrectValue = anaEvent.eventData[pos - 2].ToString();
+
+    //string cookedLevel = null;
+    //if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) > 20)
+    //{
+    //    cookedLevel = "burnt";
+    //}
+    //else if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) < 10)
+    //{
+    //    cookedLevel = "under cooked";
+    //}
+
+    //finalFeedback = finalFeedback + "\n" + "You incorrectly cooked the " + incorrectName + " You cooked the " + incorrectName
+    //+ " for " + incorrectValue + " seconds this resulted in a " + cookedLevel + " " + incorrectName;
 }
