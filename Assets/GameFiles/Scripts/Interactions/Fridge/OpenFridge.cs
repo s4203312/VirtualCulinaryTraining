@@ -1,16 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OpenFridge : MonoBehaviour
 {
-    public bool isOpen = false;
-    public TriggeringFridge openTrigger;
-
-    public GameObject fridgeCanvas;
-
     //Analytic collection
     public FridgeEvent fridgeEvent;
+
+    //Variables
+    public bool isOpen = false;
+    public TriggeringFridge openTrigger;
+    public GameObject fridgeCanvas;
 
     public void OpenDoor()
     {
@@ -21,7 +20,7 @@ public class OpenFridge : MonoBehaviour
         {
             isOpen = false;
             fridgeCanvas.SetActive(false);          //Removing canvas
-            fridgeEvent.Raise(new FridgeEventData { isCorrect = true });
+            fridgeEvent.Raise(new FridgeEventData { isCorrect = true });            //Recording the fridge has been closed
         }
         else
         {
@@ -33,7 +32,7 @@ public class OpenFridge : MonoBehaviour
         
     }
 
-    public IEnumerator OpeningDoor(GameObject pivotPoint, GameObject door)
+    public IEnumerator OpeningDoor(GameObject pivotPoint, GameObject door)          //Slowly rotates the door to set position
     {
         float targetAngle = 100;
         float rotatedAngle = 0f;

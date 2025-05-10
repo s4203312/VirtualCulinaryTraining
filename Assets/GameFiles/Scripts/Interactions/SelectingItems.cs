@@ -1,23 +1,19 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class SelectingItems : MonoBehaviour
 {
+    //Managers
     public GameManager gameManager;
     public SlicingManager slicingManager;
     public PlatingManager platingManager;
     public SaucesManager saucesManager;
     public FryingManager fryingManager;
     
+    //Variables
     public GameObject selectedItem = null;
-
     public bool itemInHand;
     public Vector3 utensilOldPos;
-
     private float zPosition;
     private Vector3 offset;
     private int i;
@@ -38,7 +34,7 @@ public class SelectingItems : MonoBehaviour
         //Moving item if a utensil
         if (selectedItem != null && selectedItem.tag == "PickUpUtensil")
         {
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1))        //Putting utensil down
             {
                 selectedItem.transform.position = utensilOldPos;
                 selectedItem.GetComponent<UtensilItem>().enabled = false;
@@ -52,6 +48,7 @@ public class SelectingItems : MonoBehaviour
         }
     }
 
+    //Picking up an item
     void SelectItem()
     {
         if (GetComponent<Camera>().enabled)
@@ -74,13 +71,14 @@ public class SelectingItems : MonoBehaviour
                     case "Plating":             //Finally plating
                         PickUpPlating(hit);
                         break;
-                    default:                    //Hitting nothing of importance
+                    default:                    //Clicking on nothing of importance
                         break;
                 }
             }
         }
     }
 
+    //Moves item across screen
     void MoveItem()
     {
         selectedItem.transform.position = GetMouseWorldPosition() + offset;
@@ -179,6 +177,7 @@ public class SelectingItems : MonoBehaviour
             //Analytic storage
             StoreFryingInfo(hit.transform.GetComponent<ItemFrying>().timeInPan, itemName);
 
+            //Reseting and adding to prep section
             hit.transform.GetComponent<ItemFrying>().timeInPan = 0;
             hit.transform.GetComponent<ItemFrying>().enabled = false;
             fryingManager.MoveItemToPrep(itemName, hit.transform.gameObject);
@@ -188,7 +187,7 @@ public class SelectingItems : MonoBehaviour
     }
     private void PickUpPlating(RaycastHit hit)
     {
-        platingManager.PlateItem(hit.transform.gameObject);
+        platingManager.PlateItem(hit.transform.gameObject);     //Putting item into burger stack
     }
 
     //Storing analytics information

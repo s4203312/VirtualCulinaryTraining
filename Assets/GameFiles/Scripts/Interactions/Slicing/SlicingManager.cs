@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Windows;
 
 public class SlicingManager : MonoBehaviour
 {
@@ -28,7 +23,7 @@ public class SlicingManager : MonoBehaviour
     private void Start()
     {
         slicingCam.GetComponent<SelectingItems>().enabled = false;
-        slicingCanvas.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(ChooseColourAgain);
+        slicingCanvas.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(ChooseColourAgain);  //Assigning the function for changing the board
     }
 
     void Update()
@@ -53,7 +48,7 @@ public class SlicingManager : MonoBehaviour
     {
         isInteracting = true;
         Vector3 newPos = slicingCam.transform.position + slicingCam.transform.forward * 0.8f;
-        colourSelection = Instantiate(colourSelectionPrefab, newPos, Quaternion.identity);
+        colourSelection = Instantiate(colourSelectionPrefab, newPos, Quaternion.identity);      //Shows the options as balls on the screen
         colourSelection.GetComponent<SelectColour>().currentCam = slicingCam;
     }
     private void ChosenColour()

@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SauceObjectStorage : MonoBehaviour
 {
-    public int amountOfSauce;
+    public int amountOfSauce;       //Stores the amount of sauce that was used
 }

@@ -1,22 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class FryingManager : MonoBehaviour
 {
+    //Variables
     public Camera fryingCam;
-
     public Transform fryingPos1;
     public Transform fryingPos2;
-
     public GameObject burgerPlatingPos;
     public GameObject baconPlatingPos;
-
     public Image burgerProgressBar;
     public Image baconProgressBar;
 
-    public void MoveItemToPrep(string itemName, GameObject itemHit)
+    public void MoveItemToPrep(string itemName, GameObject itemHit)     //Taking item to prep section
     {
         if(itemName == "Burger")
         {
@@ -28,7 +24,7 @@ public class FryingManager : MonoBehaviour
         }
     }
 
-    public void ProgressBar(float currentTime, Image progressBarImg)
+    public void ProgressBar(float currentTime, Image progressBarImg)            //Updating progress bar
     {
         float burntTime = 20f;
         if(currentTime >= burntTime)

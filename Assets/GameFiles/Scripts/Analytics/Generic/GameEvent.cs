@@ -5,7 +5,7 @@ public class GameEvent<T> : ScriptableObject                //Generic script for
 {
     private List<GameEventListener<T>> listeners = new();
 
-    public void Raise(T data)
+    public void Raise(T data)           //Globally shared function that rasies the individual events 
     {
         foreach (var listener in listeners)
         {
@@ -13,7 +13,7 @@ public class GameEvent<T> : ScriptableObject                //Generic script for
         }
     }
 
-    public void RegisterListener(GameEventListener<T> listener)
+    public void RegisterListener(GameEventListener<T> listener)     //Used in main script to ensure that each listener is found correctly
     {
         if (!listeners.Contains(listener))
         {

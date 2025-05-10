@@ -1,16 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemFrying : MonoBehaviour
 {
+    //Managers
     private FryingManager fryingManager;
+
+    //Variables
     public string itemName;
     public Material colouredItem;
     public Material burntItem;
-
     public Image progressBarImg;
     public float timeInPan;
 
@@ -57,13 +56,13 @@ public class ItemFrying : MonoBehaviour
         timeInPan += Time.deltaTime;        //Count how long the item has been in the pan
         if (timeInPan > 10f && timeInPan < 19.9f)
         {
-            transform.GetChild(0).GetComponent<MeshRenderer>().material = transform.GetComponent<ItemFrying>().colouredItem;
+            transform.GetChild(0).GetComponent<MeshRenderer>().material = transform.GetComponent<ItemFrying>().colouredItem;        //Changing material to cooked
         }
         else if (timeInPan > 20f)
         {
-            transform.GetChild(0).GetComponent<MeshRenderer>().material = transform.GetComponent<ItemFrying>().burntItem;
+            transform.GetChild(0).GetComponent<MeshRenderer>().material = transform.GetComponent<ItemFrying>().burntItem;       //Changing material to burnt
         }
-        fryingManager.ProgressBar(timeInPan, progressBarImg);
+        fryingManager.ProgressBar(timeInPan, progressBarImg);       //Updating progress bar
     }
 
 

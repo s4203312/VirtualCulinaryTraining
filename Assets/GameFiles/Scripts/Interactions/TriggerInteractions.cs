@@ -1,14 +1,14 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TriggerInteractions : MonoBehaviour
 {
+    //Managers
     public GameManager gameManager;
+    
+    //Variables
     public GameObject player;
-
     public bool inInteraction;
-
     private GameObject currentInteractionManager;
 
     //Into the interaction view
@@ -17,7 +17,7 @@ public class TriggerInteractions : MonoBehaviour
         if(other.gameObject == player && Input.GetKey(KeyCode.E) == true)
         {
             gameManager.gameCameras.TryGetValue(transform.name, out GameObject camera);
-            GameObject currentCanvas = gameManager.gameCanvases.transform.Find(transform.name).gameObject;
+            GameObject currentCanvas = gameManager.gameCanvases.transform.Find(transform.name).gameObject;      //Finding the correct canvas for the interaction
             if (camera != null)
             {
                 player.GetComponent<CharacterController>().enabled = false;     //Sets the movement of character to false
@@ -36,7 +36,7 @@ public class TriggerInteractions : MonoBehaviour
 
                 inInteraction = true;
 
-                Cursor.lockState = CursorLockMode.None;
+                Cursor.lockState = CursorLockMode.None;     //Unlocking the cursor so the user can interact with station
                 Cursor.visible = true;
             }
         }

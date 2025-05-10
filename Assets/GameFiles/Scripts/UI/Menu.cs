@@ -5,7 +5,10 @@ using TMPro;
 
 public class Menu : MonoBehaviour
 {
+    //Managers
     public GameManager gameManager;
+
+    //Variables
     public TMP_InputField userNameInput;
     private string usersName;
 
@@ -32,12 +35,12 @@ public class Menu : MonoBehaviour
         }
     }
 
-    public void LoadFeedback()
+    public void LoadFeedback()      //Called when training is over the record final time
     {
         timeTakenEvent.Raise(new TimeTakenEventData { timeTaken = gameManager.overallTimeTaken });
         SceneManager.LoadScene(2);
     }
-    public void RetryTraining()
+    public void RetryTraining()     //Retrying the training
     {
         PlayerPrefs.SetInt("FirstAttempt", 0);
         SceneManager.LoadScene(1);

@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviour       //Simple character movement and looking script using the unity character controller
 {
+    //Variables
     public float moveSpeed = 5f;
     public float mouseSensitivity = 2f;
     public Transform playerCamera;
-
     private CharacterController controller;
     private float xRotation = 0f;
 

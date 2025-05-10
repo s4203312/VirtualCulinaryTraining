@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UtensilItem : MonoBehaviour
@@ -7,6 +5,7 @@ public class UtensilItem : MonoBehaviour
     //Managers
     public SlicingManager SlicingManager;
 
+    //Variables
     private bool sauceInSpoon;
     private GameObject sauceSelected;
 
@@ -18,12 +17,12 @@ public class UtensilItem : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            switch (transform.name)
+            switch (transform.name)         //Finding out which utensil is being used
             {
                 case "Knife":
                     KnifeAction();
                     break;
-                case "TBSP" or "TSP":          //More cases to add
+                case "TBSP" or "TSP":
                     MeasuringSpoonAction();
                     break;
                 default:
@@ -32,8 +31,7 @@ public class UtensilItem : MonoBehaviour
         }
     }
 
-
-
+    //Actions for utensils
     public void KnifeAction()
     {
         Collider[] collidedObject = Physics.OverlapSphere(transform.position, 0.1f);
@@ -52,7 +50,6 @@ public class UtensilItem : MonoBehaviour
 
                         //Creating the cut version of the object
                         GameObject newItem = Instantiate(slicedObject, collider.transform.position, Quaternion.identity);
-                        //newItem.transform.localScale = collider.transform.localScale;
                         if (!newItem.TryGetComponent<SliceableObject>(out SliceableObject sliced))
                         {
                             sliced = newItem.AddComponent<SliceableObject>();
@@ -65,9 +62,9 @@ public class UtensilItem : MonoBehaviour
             }
         }
     }
-
     public void MeasuringSpoonAction()
     {
+        //Picking up sauce
         if (!sauceInSpoon)
         {
             Collider[] collidedObject = Physics.OverlapSphere(transform.position, 0.1f);
@@ -78,6 +75,8 @@ public class UtensilItem : MonoBehaviour
                     sauceSelected = collider.transform.gameObject;
                     sauceSelected.transform.position = gameObject.transform.position;
                     sauceSelected.transform.parent = gameObject.transform;
+
+                    //Assigning the correct amount to the sauce
                     if(transform.name == "TBSP")
                     {
                         sauceSelected.GetComponent<SauceObjectStorage>().amountOfSauce = 15;
@@ -90,6 +89,7 @@ public class UtensilItem : MonoBehaviour
                 }
             }
         }
+        //Placing sauce in bowl
         else
         {
             Collider[] collidedObject = Physics.OverlapSphere(transform.position, 0.05f);
@@ -108,8 +108,6 @@ public class UtensilItem : MonoBehaviour
         }
     }
 
-    
-    
     //Storing analytics information
     public void StoreChoppingInfo(string boardColor, string itemName)
     {
@@ -135,6 +133,7 @@ public class UtensilItem : MonoBehaviour
 
     public void StoreSauceInfo(string amount, string sauceName)
     {
+        //Checking if the correct amount of a specific sauce was used
         bool correctAmount = false;
         if (sauceName == "Mayo" || sauceName == "Lettuce(Clone)")
         {

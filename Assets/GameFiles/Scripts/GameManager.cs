@@ -1,24 +1,20 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //Variables
     public Dictionary<string, GameObject> gameCameras = new Dictionary<string, GameObject>();
     public GameObject gameCanvases;
-
     public GameObject recipe;
-    private string filePath;
     public float overallTimeTaken;
-
     public GameObject spaceInFridge;
     public GameObject itemInFridge;
     public bool isInFridge = false;
 
     void Awake()
     {
+        //Setting up the game
         FindAllCameras();
         SetUpPlayer();
 
@@ -43,13 +39,13 @@ public class GameManager : MonoBehaviour
     }
     private void SetUpPlayer()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;       //Ensuring the cursor is not visable
         Cursor.visible = false;
     }
 
     private void Update()
     {
-        if(Input.GetKey(KeyCode.R) == true)     //Recipe
+        if(Input.GetKey(KeyCode.R) == true)     //Opening the recipe
         {
             recipe.SetActive(true);
         }
@@ -58,6 +54,6 @@ public class GameManager : MonoBehaviour
             recipe.SetActive(false);
         }
 
-        overallTimeTaken += Time.deltaTime;
+        overallTimeTaken += Time.deltaTime;     //Updating the total time
     }
 }

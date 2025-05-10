@@ -1,22 +1,16 @@
 using System.IO;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using TMPro;
-using System.Globalization;
-using UnityEngine.SocialPlatforms;
 using System;
 
 public class Feedback : MonoBehaviour
 {
+    //Variables
     private string filePath;
-
     public GameObject firstTable;
     public GameObject secondTable;
     public GameObject currentTable;
-
     private bool hasHitFalse;
-
     private string incorrectName;
     private string incorrectValue;
 
@@ -26,7 +20,7 @@ public class Feedback : MonoBehaviour
 
     public void Start()
     {
-        if (isPathFound)
+        if (isPathFound)        //If there is a file then start creating feedback
         {
             filePath = FileManager.filePath;
             AnalyticsWrapper savedInfo = LoadFile();
@@ -34,7 +28,7 @@ public class Feedback : MonoBehaviour
         }
     }
 
-    public void ReviewStart()
+    public void ReviewStart()           //Used for reviewing the data outside of the training feedback
     {
         if (userNameInput.text != "")
         {
@@ -50,7 +44,7 @@ public class Feedback : MonoBehaviour
         return JsonUtility.FromJson<AnalyticsWrapper>(json);        //Deserialising the list so unity can read it again
     }
 
-    public void CreateFeedback(AnalyticsWrapper savedInfo)
+    public void CreateFeedback(AnalyticsWrapper savedInfo)      //Filling in the tables for feedback
     {
         currentTable = firstTable;
         currentTable.SetActive(true);
@@ -106,7 +100,7 @@ public class Feedback : MonoBehaviour
                     break;
             }
 
-            if (hasHitFalse)
+            if (hasHitFalse)            //If an event fires false then that event has been failed and a cross will be displayed
             {
                 return;
             }
@@ -126,23 +120,6 @@ public class Feedback : MonoBehaviour
             hasHitFalse = true;
             currentTable.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
             currentTable.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
-
-
-            //Retrieving the incorrect data
-            incorrectName = anaEvent.eventData[pos - 1].ToString();
-            incorrectValue = anaEvent.eventData[pos - 2].ToString();
-
-            string correctBoard;
-            if (incorrectName == "MinceBeef")
-            {
-                correctBoard = "Red";
-            }
-            else
-            {
-                correctBoard = "Green";
-            }
-            //finalFeedback = finalFeedback + "\n" + "You incorrectly chopped a " + incorrectName + " using a " + incorrectValue
-            //+ " chopping board. Next time use a " + correctBoard + " chopping board for the " + incorrectName;
         }
     }
     public void SaucesData(AnalyticsEvent anaEvent, int pos)
@@ -157,12 +134,6 @@ public class Feedback : MonoBehaviour
             hasHitFalse = true;
             currentTable.transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
             currentTable.transform.GetChild(1).GetChild(1).gameObject.SetActive(false);
-
-            //Retrieving the incorrect data
-            incorrectName = anaEvent.eventData[pos - 1].ToString();
-            incorrectValue = anaEvent.eventData[pos - 2].ToString();
-
-            //Add feedback
         }
     }
     public void FryingData(AnalyticsEvent anaEvent, int pos)
@@ -177,31 +148,12 @@ public class Feedback : MonoBehaviour
             hasHitFalse = true;
             currentTable.transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
             currentTable.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
-
-            //Retrieving the incorrect data
-            incorrectName = anaEvent.eventData[pos - 1].ToString();
-            incorrectValue = anaEvent.eventData[pos - 2].ToString();
-
-            string cookedLevel = null;
-            if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) > 20)
-            {
-                cookedLevel = "burnt";
-            }
-            else if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) < 10)
-            {
-                cookedLevel = "under cooked";
-            }
-
-            //finalFeedback = finalFeedback + "\n" + "You incorrectly cooked the " + incorrectName + " You cooked the " + incorrectName
-            //+ " for " + incorrectValue + " seconds this resulted in a " + cookedLevel + " " + incorrectName;
         }
     }
     public void CheeseData(AnalyticsEvent anaEvent, int pos)
     {
         if (anaEvent.eventData[pos] == "True")
         {
-            //finalFeedback = finalFeedback + "\n" + "You forgot to add the cheese to the burger";
-
             currentTable.transform.GetChild(3).GetChild(0).gameObject.SetActive(false);
             currentTable.transform.GetChild(3).GetChild(1).gameObject.SetActive(true);
         }
@@ -210,8 +162,6 @@ public class Feedback : MonoBehaviour
     {
         if (anaEvent.eventData[pos] == "True")
         {
-            //finalFeedback = finalFeedback + "\n" + "You forgot to close the fridge after taking the burgers out"; 
-
             currentTable.transform.GetChild(4).GetChild(0).gameObject.SetActive(false);
             currentTable.transform.GetChild(4).GetChild(1).gameObject.SetActive(true);
         }
@@ -226,8 +176,6 @@ public class Feedback : MonoBehaviour
     {
         if (anaEvent.eventData[pos] == "True")
         {
-            //finalFeedback = finalFeedback + "\n" + "You forgot to prep items that are required in the recipe";
-
             currentTable.transform.GetChild(5).GetChild(0).gameObject.SetActive(false);
             currentTable.transform.GetChild(5).GetChild(1).gameObject.SetActive(true);
         }
@@ -236,8 +184,6 @@ public class Feedback : MonoBehaviour
     {
         if (anaEvent.eventData[pos] == "True")
         {
-            //finalFeedback = finalFeedback + "\n" + "You incorrectly plated the burger";
-
             currentTable.transform.GetChild(6).GetChild(0).gameObject.SetActive(false);
             currentTable.transform.GetChild(6).GetChild(1).gameObject.SetActive(true);
         }
@@ -248,6 +194,5 @@ public class Feedback : MonoBehaviour
         int mins = TimeSpan.FromSeconds(Double.Parse(timeTaken)).Minutes;
         int secs = TimeSpan.FromSeconds(Double.Parse(timeTaken)).Seconds;
         currentTable.transform.GetChild(7).GetChild(0).GetComponent<TMP_Text>().text = mins.ToString() + ":" + secs.ToString();
-        //finalFeedback = finalFeedback + "\n" + "You took " + timeTaken + " seconds to complete the training";
     }
 }

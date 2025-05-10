@@ -28,7 +28,7 @@ public class AnalyticsListener : MonoBehaviour
 
     private async void Awake()
     {
-        await UnityServices.InitializeAsync();      //Initializing the analytic service
+        await UnityServices.InitializeAsync();      //Initializing the online analytic service
         AnalyticsService.Instance.StartDataCollection();    //Starting to collect data
     }
 
