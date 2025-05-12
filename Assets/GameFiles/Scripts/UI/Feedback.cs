@@ -34,6 +34,8 @@ public class Feedback : MonoBehaviour
         {
             filePath = FileManager.filePath;
             AnalyticsWrapper savedInfo = LoadFile();
+            writtenFeedbackButton.SetActive(true);              //Sets written feedback button to active
+            visualFeedbackButton.SetActive(false);
             CreateFeedback(savedInfo);
         }
     }
@@ -76,8 +78,6 @@ public class Feedback : MonoBehaviour
     {
         finalFeedback = "";
         bulletCounter = 0;
-        writtenFeedbackButton.SetActive(true);              //Sets written feedback button to active
-        visualFeedbackButton.SetActive(false);
 
         currentTable = firstTable;
         currentTable.SetActive(true);
@@ -88,7 +88,10 @@ public class Feedback : MonoBehaviour
 
         if(savedInfo.SecondTryEvents.Count > 0)
         {
-            writtenFeedbackButton.SetActive(false);             //Sets written feedback button to disabled as only gives written feedback after attempt one
+            if(writtenFeedbackButton != null)
+            {
+                writtenFeedbackButton.SetActive(false);             //Sets written feedback button to disabled as only gives written feedback after attempt one
+            }
             currentTable = secondTable;
             currentTable.SetActive(true);
             foreach (var anaEvent in savedInfo.SecondTryEvents)
