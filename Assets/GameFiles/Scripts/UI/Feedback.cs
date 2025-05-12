@@ -3,15 +3,24 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.Globalization;
+using Unity.VisualScripting;
+using System.Net.Http.Headers;
 
 public class Feedback : MonoBehaviour
 {
-    //Variables
+    //Variables for Visual Feedback
     private string filePath;
     public GameObject firstTable;
     public GameObject secondTable;
     public GameObject currentTable;
     private bool hasHitFalse;
+    public GameObject visualFeedbackButton;
+
+    //Variables for Written Feedback
+    private string finalFeedback;
+    public TMP_Text writtenFeedbackBox;
+    public GameObject writtenFeedbackButton;
+    private int bulletCounter;
     private string incorrectName;
     private string incorrectValue;
 
@@ -39,6 +48,24 @@ public class Feedback : MonoBehaviour
         }
     }
 
+    public void WrittenFeedback()           //Displaying a written version for more indepth feedback
+    {
+        writtenFeedbackBox.text = finalFeedback;
+        visualFeedbackButton.SetActive(true);
+        writtenFeedbackButton.SetActive(false);
+        writtenFeedbackBox.gameObject.SetActive(true);
+        firstTable.SetActive(false);
+        secondTable.SetActive(false);
+    }
+
+    public void VisualFeedback()
+    {
+        visualFeedbackButton.SetActive(false);
+        writtenFeedbackButton.SetActive(true);
+        writtenFeedbackBox.gameObject.SetActive(false);
+        firstTable.SetActive(true);
+    }
+
     public AnalyticsWrapper LoadFile()
     {
         string json = File.ReadAllText(filePath);
@@ -47,6 +74,11 @@ public class Feedback : MonoBehaviour
 
     public void CreateFeedback(AnalyticsWrapper savedInfo)      //Filling in the tables for feedback
     {
+        finalFeedback = "";
+        bulletCounter = 0;
+        writtenFeedbackButton.SetActive(true);              //Sets written feedback button to active
+        visualFeedbackButton.SetActive(false);
+
         currentTable = firstTable;
         currentTable.SetActive(true);
         foreach (var anaEvent in savedInfo.FirstTryEvents)
@@ -56,6 +88,7 @@ public class Feedback : MonoBehaviour
 
         if(savedInfo.SecondTryEvents.Count > 0)
         {
+            writtenFeedbackButton.SetActive(false);             //Sets written feedback button to disabled as only gives written feedback after attempt one
             currentTable = secondTable;
             currentTable.SetActive(true);
             foreach (var anaEvent in savedInfo.SecondTryEvents)
@@ -121,6 +154,24 @@ public class Feedback : MonoBehaviour
             hasHitFalse = true;
             currentTable.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
             currentTable.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+
+            //Retrieving the incorrect data
+            incorrectName = anaEvent.eventData[pos - 1].ToString();
+            incorrectValue = anaEvent.eventData[pos - 2].ToString();
+
+            string correctBoard;
+            if (incorrectName == "MinceBeef")
+            {
+                correctBoard = "Red";
+            }
+            else
+            {
+                correctBoard = "Green";
+            }
+
+            bulletCounter++;
+            finalFeedback = finalFeedback + "\n" + bulletCounter + ". You incorrectly chopped a " + incorrectName + " using a " + incorrectValue
+            + " coloured chopping board. Next time use a " + correctBoard + " chopping board.";
         }
     }
     public void SaucesData(AnalyticsEvent anaEvent, int pos)
@@ -135,6 +186,9 @@ public class Feedback : MonoBehaviour
             hasHitFalse = true;
             currentTable.transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
             currentTable.transform.GetChild(1).GetChild(1).gameObject.SetActive(false);
+
+            bulletCounter++;
+            finalFeedback = finalFeedback + "\n" + bulletCounter + ". You incorrectly mixed the sauce ingredients. Remember to follow recipe";
         }
     }
     public void FryingData(AnalyticsEvent anaEvent, int pos)
@@ -149,6 +203,24 @@ public class Feedback : MonoBehaviour
             hasHitFalse = true;
             currentTable.transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
             currentTable.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
+
+            //Retrieving the incorrect data
+            incorrectName = anaEvent.eventData[pos - 1].ToString();
+            incorrectValue = anaEvent.eventData[pos - 2].ToString();
+
+            string cookedLevel = null;
+            if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) > 20)
+            {
+                cookedLevel = "burnt";
+            }
+            else if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) < 10)
+            {
+                cookedLevel = "under cooked";
+            }
+
+            bulletCounter++;
+            finalFeedback = finalFeedback + "\n" + bulletCounter + ". You incorrectly cooked the " + incorrectName + ". You cooked the " + incorrectName
+            + " for " + incorrectValue + " seconds this resulted in a " + cookedLevel + " " + incorrectName;
         }
     }
     public void CheeseData(AnalyticsEvent anaEvent, int pos)
@@ -157,6 +229,11 @@ public class Feedback : MonoBehaviour
         {
             currentTable.transform.GetChild(3).GetChild(0).gameObject.SetActive(false);
             currentTable.transform.GetChild(3).GetChild(1).gameObject.SetActive(true);
+        }
+        else if (anaEvent.eventData[pos] == "False")
+        {
+            bulletCounter++;
+            finalFeedback = finalFeedback + "\n" + bulletCounter + ". You forgot to add the cheese to the burger";
         }
     }
     public void FridgeData(AnalyticsEvent anaEvent, int pos)
@@ -171,6 +248,9 @@ public class Feedback : MonoBehaviour
             hasHitFalse = true;
             currentTable.transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
             currentTable.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
+
+            bulletCounter++;
+            finalFeedback = finalFeedback + "\n" + bulletCounter + ". You forgot to close the fridge after taking the burgers out";
         }
     }
     public void PreppingData(AnalyticsEvent anaEvent, int pos)
@@ -180,6 +260,11 @@ public class Feedback : MonoBehaviour
             currentTable.transform.GetChild(5).GetChild(0).gameObject.SetActive(false);
             currentTable.transform.GetChild(5).GetChild(1).gameObject.SetActive(true);
         }
+        else if (anaEvent.eventData[pos] == "False")
+        {
+            bulletCounter++;
+            finalFeedback = finalFeedback + "\n" + bulletCounter + ". You forgot items that are required in the recipe";
+        }
     }
     public void PlatingData(AnalyticsEvent anaEvent, int pos)
     {
@@ -187,6 +272,11 @@ public class Feedback : MonoBehaviour
         {
             currentTable.transform.GetChild(6).GetChild(0).gameObject.SetActive(false);
             currentTable.transform.GetChild(6).GetChild(1).gameObject.SetActive(true);
+        }
+        else if (anaEvent.eventData[pos] == "False")
+        {
+            bulletCounter++;
+            finalFeedback = finalFeedback + "\n" + bulletCounter + ". You incorrectly plated the burger";
         }
     }
     public void TimeTakenData(AnalyticsEvent anaEvent, int pos)
@@ -196,37 +286,4 @@ public class Feedback : MonoBehaviour
         int secs = TimeSpan.FromSeconds(Double.Parse(timeTaken)).Seconds;
         currentTable.transform.GetChild(7).GetChild(0).GetComponent<TMP_Text>().text = mins.ToString() + ":" + secs.ToString();
     }
-
-    ////Retrieving the incorrect data
-    //incorrectName = anaEvent.eventData[pos - 1].ToString();
-    //incorrectValue = anaEvent.eventData[pos - 2].ToString();
-
-    //string correctBoard;
-    //if (incorrectName == "MinceBeef")
-    //{
-    //    correctBoard = "Red";
-    //}
-    //else
-    //{
-    //    correctBoard = "Green";
-    //}
-    //finalFeedback = finalFeedback + "\n" + "You incorrectly chopped a " + incorrectName + " using a " + incorrectValue
-    //+ " chopping board. Next time use a " + correctBoard + " chopping board for the " + incorrectName;
-
-    //Retrieving the incorrect data
-    //incorrectName = anaEvent.eventData[pos - 1].ToString();
-    //incorrectValue = anaEvent.eventData[pos - 2].ToString();
-
-    //string cookedLevel = null;
-    //if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) > 20)
-    //{
-    //    cookedLevel = "burnt";
-    //}
-    //else if ((float.Parse(incorrectValue, CultureInfo.InvariantCulture.NumberFormat)) < 10)
-    //{
-    //    cookedLevel = "under cooked";
-    //}
-
-    //finalFeedback = finalFeedback + "\n" + "You incorrectly cooked the " + incorrectName + " You cooked the " + incorrectName
-    //+ " for " + incorrectValue + " seconds this resulted in a " + cookedLevel + " " + incorrectName;
 }

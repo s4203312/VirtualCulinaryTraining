@@ -85,13 +85,20 @@ public class PlatingManager : MonoBehaviour
         int i = 0;
         if (correct)
         {
-            foreach (GameObject item in playerPlatingOrder)
+            if (playerPlatingOrder.Count == 7)      //Ensuring the burger has the same amount of items
             {
-                if (item != correctPlatingOrder[i])
+                foreach (GameObject item in playerPlatingOrder)
                 {
-                    correct = false;
+                    if (item != correctPlatingOrder[i])
+                    {
+                        correct = false;
+                    }
+                    i++;
                 }
-                i++;
+            }
+            else
+            {
+                correct = false;
             }
         }
         
